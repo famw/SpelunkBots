@@ -24,8 +24,8 @@ public:
 	void CalculatePerformance();
 	int CalcDistanceTraveled();
 	void Clear();
-	void PerformanceStats::TestMaps();
-	void PerformanceStats::Marathon();
+	void TestMaps();
+	void Marathon();
 	bool CheckFolderState();
 
 private:

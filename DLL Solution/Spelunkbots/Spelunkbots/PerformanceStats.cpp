@@ -142,10 +142,11 @@ void PerformanceStats::CalculatePerformance()
 			// if the bot has no ID then put the folder name as today's date.
 			auto time = std::chrono::system_clock::now();
 			auto time_t = chrono::system_clock::to_time_t(time);
-			stringstream dateString;
+			char dateString[80];
 
-			dateString << put_time(std::localtime(&time_t), "%d-%m-%y");
-			_botID = dateString.str();
+			//dateString << strftime(std::localtime(&time_t), "%d-%m-%y");
+            strftime(dateString, 80, "%d-%m-%Y", std::localtime(&time_t));
+			_botID = std::string(dateString);
 		}
 
 		bool error = false;
