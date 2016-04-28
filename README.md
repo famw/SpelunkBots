@@ -72,3 +72,6 @@ To run Game Maker, go to Game Maker folder and type:
 ```bash
 wine Game_Maker.exe
 ```
+
+> It is a good idea to keep unmarked "Hide the designer and wait while the game
+> is running" under "File > Preferences" in Game Maker.
