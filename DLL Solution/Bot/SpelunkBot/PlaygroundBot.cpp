@@ -3,6 +3,6 @@
 
 void PlaygroundBot::Update()
 {
-    std::cout << "I am a dummy bot" << endl;
+    std::cout << "I am a dummy bot" << std::endl;
     _goLeft = true;
 }
