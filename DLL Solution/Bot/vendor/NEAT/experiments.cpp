@@ -488,10 +488,10 @@ int go_cart(Network *net,int max_steps,int thresh)
 
    if (random_start) {
      /*set up random start state*/
-     x = (lrand48()%4800)/1000.0 - 2.4;
+     /*x = (lrand48()%4800)/1000.0 - 2.4;
      x_dot = (lrand48()%2000)/1000.0 - 1;
      theta = (lrand48()%400)/1000.0 - .2;
-     theta_dot = (lrand48()%3000)/1000.0 - 1.5;
+     theta_dot = (lrand48()%3000)/1000.0 - 1.5;*/
     }
    else 
      x = x_dot = theta = theta_dot = 0.0;

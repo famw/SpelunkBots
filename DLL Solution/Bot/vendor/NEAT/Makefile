@@ -1,5 +1,5 @@
 
-CC = g++ -O3
+CC = i686-w64-mingw32.static-g++ -O3
 
 #LIBS = -L/usr/lib /usr/lib/libqthreads.so.0 -lguile -ldl -lreadline -ltermcap -lm
 
