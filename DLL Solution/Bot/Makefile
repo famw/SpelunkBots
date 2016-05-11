@@ -2,6 +2,7 @@ SRCDIR=SpelunkBot
 INCDIR=SpelunkBot
 
 BUILD=build
+VENDOR=vendor
 
 # ARCH=x86_64
 ARCH=i686
@@ -23,6 +24,9 @@ OBJECTS= \
 	$(BUILD)/PlaygroundBot.o \
 	$(BUILD)/stdafx.o
 
+VENDOR_OBJECTS= \
+	$(VENDOR)/NEAT/innovation.o
+
 all: build_dir Bot.dll Bot.lib
 
 clean:
@@ -37,7 +41,9 @@ $(BUILD)/%.o: $(SRCDIR)/%.cpp
 	$(CPP) $(FLAGS) -I $(INCDIR) -shared -o $@ -c $<
 
 Bot.dll: $(OBJECTS)
-	$(CPP) $(FLAGS) -I $(INCDIR) -shared $(OBJECTS) $(SRCDIR)/dllmain.cpp -o Bot.dll
+	$(CPP) $(FLAGS) -I $(INCDIR) \
+		-shared $(VENDOR_OBJECTS) $(OBJECTS) \
+		$(SRCDIR)/dllmain.cpp -o Bot.dll
 
 Bot.lib: Bot.dll
 	$(DLLTOOL) -l Bot.lib Bot.dll
