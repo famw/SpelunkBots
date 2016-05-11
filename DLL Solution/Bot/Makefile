@@ -20,6 +20,7 @@ OBJECTS= \
 	$(BUILD)/JordanBot.o \
 	$(BUILD)/NotSoSolidSnake.o \
 	$(BUILD)/SeanBean.o \
+	$(BUILD)/PlaygroundBot.o \
 	$(BUILD)/stdafx.o
 
 all: build_dir Bot.dll Bot.lib
