@@ -26,6 +26,8 @@ First of all, clone [MXE](http://mxe.cc/#download) repo:
 git clone https://github.com/mxe/mxe.git
 ```
 
+Make sure you have all MXE [requirements](http://mxe.cc/#requirements).
+
 Then, enter in MXE folder and install gcc cross compiler:
 
 ```bash
