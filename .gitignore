@@ -196,3 +196,10 @@ FakesAssemblies/
 *.opt
 
 *.o
+
+# Project Files
+
+DLL\ Solution/*.dll
+DLL\ Solution/*.lib
+Performance
+*.exe
