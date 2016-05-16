@@ -25,7 +25,7 @@ OBJECTS= \
 	$(BUILD)/stdafx.o
 
 VENDOR_OBJECTS= \
-	$(VENDOR)/NEAT/innovation.o
+	$(VENDOR)/NEAT/*.o
 
 all: build_dir Bot.dll Bot.lib
 

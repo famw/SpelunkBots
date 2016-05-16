@@ -2,7 +2,7 @@
 |  SPELUNKY EXTENDED STATS  |
 +---------------------------+
 
-CRATES OPENED:      11
+CRATES OPENED:      12
 CHESTS OPENED:      4
 
 IDOLS GRABBED:      62
@@ -23,8 +23,8 @@ DICE GAMES LOST:    0
 
 LEVEL        DEATHS
 ------------+------------
- 1          | 349
- 2          | 18
+ 1          | 351
+ 2          | 19
  3          | 6
  4          | 9
  5          | 7
@@ -40,13 +40,13 @@ LEVEL        DEATHS
  15         | 1
  16         | 4
 ------------+------------
- TOTAL      | 419
+ TOTAL      | 422
 
 ENEMY        DEATHS
 ------------+------------
  ???        | 0
  SNAKE      | 5
- SPIDER     | 8
+ SPIDER     | 9
  ???        | 0
  CAVEMAN    | 1
  SKELETON   | 1
@@ -75,9 +75,9 @@ MISC         DEATHS
  ???        | 0
  CRUSHED    | 44
  LONG FALL  | 34
- SPIKES     | 31
+ SPIKES     | 32
  ???        | 0
- ARROW TRAP | 31
+ ARROW TRAP | 32
  SPEAR TRAP | 2
  SMASH TRAP | 3
  ???        | 0
@@ -86,9 +86,9 @@ MISC         DEATHS
 
 ENEMY        KILLS
 ------------+------------
- BAT        | 92
- SNAKE      | 220
- SPIDER     | 59
+ BAT        | 96
+ SNAKE      | 223
+ SPIDER     | 63
  G. SPIDER  | 2
  CAVEMAN    | 4
  SKELETON   | 16
@@ -110,4 +110,4 @@ ENEMY        KILLS
  ???        | 0
  OLMEC      | 1
 ------------+------------
- TOTAL      | 484
+ TOTAL      | 495
