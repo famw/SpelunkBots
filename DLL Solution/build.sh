@@ -1,35 +1,36 @@
 #!/bin/bash
 
-declare initial_dir=$(pwd)
-declare bot_dir=$(pwd)/Bot
-declare spelunkbots_dir=$(pwd)/Spelunkbots
-declare neat_dir=$(pwd)/Bot/vendor/NEAT
+declare initial_dir=$(pwd)/$(dirname "${0}")
+declare bot_dir=${initial_dir}/Bot
+declare spelunkbots_dir=${initial_dir}/Spelunkbots
+declare neat_dir=${bot_dir}/vendor/NEAT
+declare spelunky_dir=${initial_dir}/../Source/spelunky_1_1/
 
-buildDLL() {
+build_dll() {
 	echo "Building Bot and SpelunkBots DLLs..."
 
-	cd "$bot_dir"
+	cd "${bot_dir}"
 	make
-	cd "$spelunkbots_dir"
+	cd "${spelunkbots_dir}"
 	make
 
 	echo "done."
 }
 
-moveDLL() {
+move_dll() {
 	echo "Moving DLLs..."
 
-	cd "$initial_dir"
-	cp ./**/*.dll ../Source/spelunky_1_1/
+    cd "${initial_dir}"
+	cp ./**/*.dll "${spelunky_dir}"
 
 	echo "done."
 }
 
-buildVendor() {
+build_vendor() {
 	echo "Building Vendor Libraries..."
 
 	echo "Building NEAT..."
-	cd "$neat_dir"
+	cd "${neat_dir}"
 	make
 
 	echo "done."
@@ -40,9 +41,9 @@ main() {
 	echo "BUILDING DLL SOLUTION..."
 	echo "========================="
 
-	buildVendor
-	buildDLL
-	moveDLL
+	build_vendor
+	build_dll
+	move_dll
 
 	echo "========================="
 	echo "DONE."

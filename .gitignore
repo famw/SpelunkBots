@@ -199,7 +199,9 @@ FakesAssemblies/
 
 # Project Files
 
-DLL\ Solution/*.dll
-DLL\ Solution/*.lib
+DLL\ Solution/**/*.dll
+DLL\ Solution/**/*.lib
+Source/**/*.dll
 Performance
 *.exe
+screenshot*.png
