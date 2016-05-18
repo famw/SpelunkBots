@@ -11,3 +11,5 @@ before_install:
     - MXE_TARGETS='x86_64-w64-mingw32.static i686-w64-mingw32.static' make gcc
 script:
     ./DLL\ Solution/build.sh
+notifications:
+    email: false
