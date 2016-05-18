@@ -1,7 +1,7 @@
 before_install:
     - sudo apt-get -qq update
     - sudo apt-get install -y libxml2-dev
-    - sudo apt-get install autoconf automake autopoint bash bison bzip2 flex gettext git g++ gperf intltool libffi-dev libgdk-pixbuf2.0-dev libtool libltdl-dev libssl-dev libxml-parser-perl make openssl p7zip-full patch perl pkg-config python ruby scons sed unzip wget xz-utils libtool-bin
+    - sudo apt-get install autoconf automake autopoint bash bison bzip2 flex gettext git g++ gperf intltool libffi-dev libgdk-pixbuf2.0-dev libtool libltdl-dev libssl-dev libxml-parser-perl make openssl p7zip-full patch perl pkg-config python ruby scons sed unzip wget xz-utils
     - git clone https://github.com/mxe/mxe.git
     - export PATH=$PATH:$PWD/mxe
     - cd $PWD/mxe
