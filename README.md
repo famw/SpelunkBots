@@ -55,16 +55,10 @@ if you want to have it under your `$PATH` forever, add `export PATH` command to
 your `.bashrc` (or `.zshrc` if using zsh), replacing `$(pwd)` with absolute path
 to MXE installation.
 
-Then, just go to `DLL Solution` folder and run `make` for each folder:
+Then, just go to `DLL Solution` folder and build it using `build.sh`:
 
 ```bash
-cd Bot ; make ; cd ../Spelunkbots ; make ; cd ..
-```
-
-Now, copy all DLL's to source folder:
-
-```bash
-cp ./**/*.dll ../Source/spelunky_1_1/
+./build.sh
 ```
 
 ### Running Game Maker
