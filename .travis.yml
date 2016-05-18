@@ -1,5 +1,6 @@
 before_install:
-    - sudo apt-get update
+    - sudo apt-get -qq update
+    - sudo apt-get install -y libxml2-dev
     - sudo apt-get install \
         autoconf automake autopoint bash bison bzip2 flex gettext\
         git g++ gperf intltool libffi-dev libgdk-pixbuf2.0-dev \
