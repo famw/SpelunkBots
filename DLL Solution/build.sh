@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -o errexit
+set -o pipefail
+set -o nounset
+
 declare initial_dir=$(pwd)/$(dirname "${0}")
 declare bot_dir=${initial_dir}/Bot
 declare spelunkbots_dir=${initial_dir}/Spelunkbots
