@@ -5,7 +5,7 @@ install:
 before_script:
     - git clone https://github.com/mxe/mxe.git
     - cd mxe
-    - MXE_TARGETS='x86_64-w64-mingw32.static i686-w64-mingw32.static' make gcc
+    - MXE_TARGETS='x86_64-w64-mingw32.static i686-w64-mingw32.static' make gcc VERBOSE=1
 script:
     ./DLL\ Solution/build.sh
 notifications:
