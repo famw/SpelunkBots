@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "PlaygroundBot.h"
 
-#include "../vendor/NEAT/innovation.h"
+#include "../lib/NEAT/innovation.h"
 
 void PlaygroundBot::Update()
 {
