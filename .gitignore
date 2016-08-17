@@ -205,3 +205,7 @@ Source/**/*.dll
 Performance
 *.exe
 screenshot*.png
+
+
+# Vim swap files
+*.swp

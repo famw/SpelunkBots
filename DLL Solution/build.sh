@@ -13,8 +13,10 @@ declare spelunky_dir=${initial_dir}/../Source/spelunky_1_1/
 build_dll() {
 	echo "Building Bot and SpelunkBots DLLs..."
 
+	echo "Building Bot DLL..."
 	cd "${bot_dir}"
 	make
+	echo "Building SpelunkBots DLL..."
 	cd "${spelunkbots_dir}"
 	make
 

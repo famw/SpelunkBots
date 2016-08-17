@@ -21,7 +21,7 @@ OBJECTS= \
 	$(BUILD)/JordanBot.o \
 	$(BUILD)/NotSoSolidSnake.o \
 	$(BUILD)/SeanBean.o \
-	$(BUILD)/PlaygroundBot.o \
+	$(BUILD)/NEATBot.o \
 	$(BUILD)/stdafx.o
 
 LIB_OBJECTS= \
