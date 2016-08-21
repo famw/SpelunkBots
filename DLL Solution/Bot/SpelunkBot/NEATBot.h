@@ -8,6 +8,7 @@
 #include "time.h"
 #include "../lib/NEAT/neat.h"
 #include "../lib/NEAT/population.h"
+#include "../lib/NEAT/genome.h"
 
 class NEATBot : public IBot
 {
@@ -22,5 +23,6 @@ public:
 	void LoadNeat();
 
 	std::unique_ptr<NEAT::Population> pop;
+	std::unique_ptr<NEAT::Genome> genome;
 };
 

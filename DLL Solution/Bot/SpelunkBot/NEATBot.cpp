@@ -1,3 +1,5 @@
+#include <iostream>
+#include <fstream>
 #include "NEATBot.h"
 
 NEATBot::NEATBot()
@@ -44,4 +46,19 @@ void NEATBot::LoadNeat()
 
 	// Load parameters file
 	NEAT::load_neat_params("neat_parameters.ne", true);
+
+	// Load starter genome file
+	char curword[20];
+	int id;
+
+	std::ifstream iFile("neat_startgenes", std::ios::in);
+	std::cout << "Reading starter genome" << std::endl;
+	iFile >> curword;
+	iFile >> id;
+	std::cout << "Reading Genome ID" << std::endl;
+	genome = std::make_unique<NEAT::Genome>(id, iFile);
+	iFile.close();
+
+	genome->genome_id;
+	genome->print_to_filename("test.genome");
 }
