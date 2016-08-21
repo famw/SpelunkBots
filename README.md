@@ -89,7 +89,7 @@ sudo apt-get install xvfb
 Once xvfb is installed, we need to run a new display instance:
 
 ```bash
-Xvfb :1 -screen 0 1024x767x24
+Xvfb :1 -screen 0 1280x640x24
 ```
 
 This will create a new display (:1). Now, we just need to run `spelunkbots.exe`
@@ -108,5 +108,9 @@ screenshot):
 DISPLAY=:1 import -window root /tmp/screenshot.png
 ```
 
-> If needed, we may also record a video using ffmpeg or something like that,
-> we just need to point the tool to the correct display and use it.
+We can also record a video using `ffmpeg`. Make sure you have it installed and
+run:
+
+```bash
+ffmpeg -y -video_size 1280x640 -framerate 30 -f x11grab -i :1.0 record.mp4
+```
