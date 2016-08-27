@@ -12,5 +12,9 @@ class BehaviorTreeBot : public IBot
 public:
 	BehaviorTreeBot();
 	~BehaviorTreeBot();
-};
 
+	// SpelunkBots
+	void Update()   override;
+	void Reset()    override;
+	void NewLevel() override;
+};

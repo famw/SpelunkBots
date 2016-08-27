@@ -13,6 +13,7 @@
 #include "Indie.h"
 #include "FishBot.h"
 #include "NEATBot.h"
+#include "BehaviorTreeBot.h"
 #include <memory>
 
 std::unique_ptr<IBot> bot;
@@ -65,6 +66,8 @@ void CreateBot(double botSelector)
 			break;
         case 9:
             bot = std::make_unique<NEATBot>();
+        case 10:
+            bot = std::make_unique<BehaviorTreeBot>();
 		default:
 			break;
 	}
