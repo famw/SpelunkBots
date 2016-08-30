@@ -17,4 +17,12 @@ public:
 	void Update()   override;
 	void Reset()    override;
 	void NewLevel() override;
+
+    // BehaviorTree experiment
+    void SetGoRight(bool value)
+    {
+        std::cout << "GOING RIGHT" << std::endl;
+        _goRight = value;
+    };
+    bt4::BehaviorTree bt;
 };
