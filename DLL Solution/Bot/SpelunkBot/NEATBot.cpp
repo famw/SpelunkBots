@@ -132,7 +132,7 @@ void NEATBot::ResetExperiment()
 	organism = population->organisms.at(currentOrganism);
 
 	// Reset fitness score
-	currentFitness = 0.0f;
+	currentFitness = 1.0f;
 
 	std::cout << "Beginning evaluation..." << std::endl;
 	std::cout << "GENERATION: " << currentGeneration << std::endl;
