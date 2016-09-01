@@ -6,7 +6,7 @@ NEATBot::NEATBot()
 {
 	currentGeneration = 0;
 	currentOrganism = 0;
-	currentFitness = 0.0f;
+	currentFitness = 1.0f;
 	InitializeNeat();
 }
 
