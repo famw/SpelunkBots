@@ -66,8 +66,10 @@ void CreateBot(double botSelector)
 			break;
         case 9:
             bot = std::make_unique<NEATBot>();
+			break;
         case 10:
             bot = std::make_unique<BehaviorTreeBot>();
+			break;
 		default:
 			break;
 	}

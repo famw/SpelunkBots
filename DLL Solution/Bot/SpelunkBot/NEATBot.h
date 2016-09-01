@@ -10,11 +10,11 @@
 #include "../lib/NEAT/population.h"
 #include "../lib/NEAT/genome.h"
 
-enum OUTPUT
+enum Output
 {
 	MOVE_LEFT,
 	MOVE_RIGHT,
-	LOOK_UP,
+	JUMP,
 	
 	OUTPUT_MAX
 };
@@ -33,6 +33,9 @@ public:
 	// NEAT configurations
 	void InitializeNeat();
 	void ResetExperiment();
+	void ConfigureInputs();
+	void ConfigureOutputs();
+	void ExecuteOutputs();
 
 	// NEAT experiment
 	std::unique_ptr<NEAT::Population> population;
