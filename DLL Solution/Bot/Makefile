@@ -26,7 +26,8 @@ OBJECTS= \
 	$(BUILD)/stdafx.o
 
 LIB_OBJECTS= \
-	$(LIB)/NEAT/*.o
+	$(LIB)/NEAT/*.o \
+	$(LIB)/BehaviorTree/build/*.o
 
 all: build_dir Bot.dll Bot.lib
 

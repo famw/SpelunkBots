@@ -5,7 +5,9 @@
 #include "IBot.h"
 
 #include "time.h"
-#include "../lib/btsk/BehaviorTreeEvent.cpp"
+#include "../lib/BehaviorTree/src/BehaviorTree.h"
+
+using namespace bt;
 
 class BehaviorTreeBot : public IBot
 {
@@ -24,5 +26,6 @@ public:
         std::cout << "GOING RIGHT" << std::endl;
         _goRight = value;
     };
-    bt4::BehaviorTree bt;
+
+    BehaviorTree* bt;
 };

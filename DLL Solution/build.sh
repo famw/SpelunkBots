@@ -4,10 +4,13 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+declare CC=i686-w64-mingw32.static-gcc 
+
 declare initial_dir=$(pwd)/$(dirname "${0}")
 declare bot_dir=${initial_dir}/Bot
 declare spelunkbots_dir=${initial_dir}/Spelunkbots
 declare neat_dir=${bot_dir}/lib/NEAT
+declare bt_dir=${bot_dir}/lib/BehaviorTree
 declare spelunky_dir=${initial_dir}/../Source/spelunky_1_1/
 
 build_dll() {
@@ -38,6 +41,10 @@ build_lib() {
 	echo "Building NEAT..."
 	cd "${neat_dir}"
 	make
+
+    echo "Building BehaviorTrees"
+    cd "${bt_dir}"
+    CC=${CC} make
 
 	echo "done."
 }

@@ -1,8 +1,9 @@
-using namespace std;
-
 #include "BehaviorTreeBot.h"
 
-class GoRightBehavior : public bt4::Behavior
+using namespace std;
+using namespace bt;
+
+class GoRightBehavior : public Behavior
 {
 private:
     BehaviorTreeBot* bot;
@@ -12,21 +13,20 @@ public:
         this->bot = bot;
     }
 
-    bt4::Status update()
+    Status update()
     {
         std::cout << "UPDATE" << std::endl;
         bot->SetGoRight(true);
-        return bt4::BH_SUCCESS;
+        return SUCCESS;
     }
 };
 
 BehaviorTreeBot::BehaviorTreeBot()
 {
-    bt4::Behavior* b = new GoRightBehavior(this);
+    Behavior* b = new GoRightBehavior(this);
 
     cout << "Init BehaviorTreeBot" << endl;
-    bt = bt4::BehaviorTree();
-    bt.start(*b);
+    bt = new BehaviorTree(*b);
 }
 
 BehaviorTreeBot::~BehaviorTreeBot()
@@ -38,7 +38,7 @@ BehaviorTreeBot::~BehaviorTreeBot()
 void BehaviorTreeBot::Update()
 {
     cout << "Update BehaviorTreeBot" << endl;
-    bt.step();
+    bt->step();
 }
 
 void BehaviorTreeBot::Reset()
