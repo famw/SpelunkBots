@@ -1,0 +1,3 @@
+[submodule "DLL Solution/Bot/lib/BehaviorTree"]
+	path = DLL Solution/Bot/lib/BehaviorTree
+	url = https://github.com/famw/BehaviorTree
