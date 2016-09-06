@@ -6,6 +6,8 @@
 
 #include "time.h"
 #include "../lib/BehaviorTree/src/BehaviorTree.h"
+#include "../lib/BehaviorTree/src/Selector.h"
+#include "../lib/BehaviorTree/src/Sequence.h"
 
 using namespace bt;
 
@@ -21,11 +23,5 @@ public:
 	void NewLevel() override;
 
     // BehaviorTree experiment
-    void SetGoRight(bool value)
-    {
-        std::cout << "GOING RIGHT" << std::endl;
-        _goRight = value;
-    };
-
     BehaviorTree* bt;
 };

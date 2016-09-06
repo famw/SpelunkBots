@@ -74,7 +74,7 @@ private:
 
 	void InitialiseDLLFunctions(void);
 
-protected:
+public:
 	double _pathCount;
 	double _tempID;
 	double _waitTimer;
