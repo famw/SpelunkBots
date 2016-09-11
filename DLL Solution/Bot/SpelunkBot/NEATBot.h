@@ -36,6 +36,8 @@ public:
 	void ConfigureInputs();
 	void ConfigureOutputs();
 	void ExecuteOutputs();
+	void UpdateFitness();
+	bool IsIdleTooLong();
 
 	// NEAT experiment
 	std::unique_ptr<NEAT::Population> population;
@@ -45,8 +47,16 @@ public:
 	int currentOrganism;
 	float currentFitness;
 
-	// Controls
+	// NEAT controls
 	double input[2];
 	bool output[OUTPUT_MAX];
+
+	// NEAT fitness values
+	int scoreExit{1000};
+
+	// NEAT idle control
+	double lastX{0}, lastY{0};
+	double lastTimeMoved{0};
+	double maxIdleTime{3.0};
 };
 

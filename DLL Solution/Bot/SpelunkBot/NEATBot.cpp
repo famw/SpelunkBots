@@ -16,17 +16,17 @@ NEATBot::~NEATBot()
 
 void NEATBot::Update()
 {
-	//std::cout << "Position: " << _playerPositionX << "," << _playerPositionY << std::endl;
 
-	// If the player is at the exit
-	/*if(GetNodeState(_playerPositionXNode, _playerPositionYNode, NODE_COORDS) == spExit)
-	{
-		// He won :)
-		std::cout << "Found the exit" << std::endl;
-		organism->winner = true;
-	}*/
-
+	//GetTickCount();
+	//std::cout << "Time elapsed: " << GetTimeElapsed() << std::endl;
+	//std::cout << "Time left: " << GetSecondsLeft() << std::endl;
 	
+	if(IsIdleTooLong())
+		std::cout << "PLAYER IS IDLE!" << std::endl;
+
+	// Update organism's fitness
+	UpdateFitness();
+		
 	// Set up inputs (sensory nodes)
 	ConfigureInputs();
 	// Load network with inputs
@@ -36,10 +36,8 @@ void NEATBot::Update()
 
 	// Set up outputs
 	ConfigureOutputs();
-	
 	// Act based on outputs
 	ExecuteOutputs();
-
 }
 
 void NEATBot::Reset()
@@ -175,4 +173,41 @@ void NEATBot::ExecuteOutputs()
 	if(output[MOVE_LEFT]) _goLeft = true;
 	if(output[MOVE_RIGHT]) _goRight = true;
 	if(output[JUMP]) _jump = true;
+}
+
+void NEATBot::UpdateFitness()
+{
+	// Check for win condition
+	if(GetNodeState(_playerPositionXNode, _playerPositionYNode, NODE_COORDS) == spExit)
+	{
+		std::cout << "Found the exit" << std::endl;
+		currentFitness += scoreExit;
+		organism->winner = true;
+	}
+}
+
+bool NEATBot::IsIdleTooLong()
+{
+	bool isIdle = false;
+
+	// If we changed positions (node)
+	if(lastX != _playerPositionXNode || lastY != _playerPositionYNode)
+	{
+		std::cout << "we moved" << std::endl;
+		// Update our last time moved
+		lastX = _playerPositionXNode;
+		lastY = _playerPositionYNode;
+	}
+	// We have not moved
+	else
+	{
+		std::cout << "we are idle" << std::endl;
+		// Check if it's been too long
+		if(GetTimeElapsed() - lastTimeMoved >= maxIdleTime)
+		{
+			isIdle = true;
+		}
+	}
+	
+	return isIdle;
 }

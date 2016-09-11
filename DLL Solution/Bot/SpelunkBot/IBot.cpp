@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "IBot.h"
 
 IBot::IBot()
@@ -108,6 +107,10 @@ void IBot::InitialiseDLLFunctions()
 	IsEnemyInNode = (IsEnemyInNodePROC)GetProcAddress(spelunkbots_hModule, "IsEnemyInNode");
 	IsCollectableInNode = (IsCollectableInNodePROC)GetProcAddress(spelunkbots_hModule, "IsCollectableInNode");
 	IsNodePassable = (IsNodePassablePROC)GetProcAddress(spelunkbots_hModule, "IsNodePassable");
+
+
+	GetTimeElapsed = (GetTimeElapsedPROC)GetProcAddress(spelunkbots_hModule, "GetTimeElapsed");
+	GetSecondsLeft = (GetSecondsLeftPROC)GetProcAddress(spelunkbots_hModule, "GetSecondsLeft");
 }
 
 void IBot::Reset()

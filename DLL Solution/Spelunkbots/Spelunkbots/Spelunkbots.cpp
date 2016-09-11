@@ -1827,3 +1827,15 @@ GMEXPORT double RecordStats(double val, char* stat)
 	return 1;
 }
 #pragma endregion
+
+
+GMEXPORT double GetTimeElapsed() 
+{
+	//TODO: review, this does not correspond to time elapsed IN GAME.
+	return _testSeconds - _secondsLeft;
+}
+
+GMEXPORT double GetSecondsLeft()
+{
+	return _secondsLeft;
+}

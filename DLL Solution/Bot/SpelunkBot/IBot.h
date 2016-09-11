@@ -65,6 +65,10 @@ typedef double(__cdecl *IsEnemyInNodePROC)(double x, double y, double usingPixel
 typedef double(__cdecl *IsCollectableInNodePROC)(double x, double y, double usingPixelCoords);
 typedef double(__cdecl *IsNodePassablePROC)(double x, double y, double usingPixelCoords);
 
+
+typedef double(__cdecl *GetTimeElapsedPROC)();
+typedef double(__cdecl *GetSecondsLeftPROC)();
+
 #pragma endregion
 
 class IBot
@@ -168,6 +172,10 @@ public:
 	IsEnemyInNodePROC IsEnemyInNode;
 	IsCollectableInNodePROC IsCollectableInNode;
 	IsNodePassablePROC IsNodePassable;
+
+
+	GetTimeElapsedPROC GetTimeElapsed;
+	GetSecondsLeftPROC GetSecondsLeft;
 
 	inline double GetHasGoal(void)
 	{
