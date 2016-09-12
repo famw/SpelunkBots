@@ -74,4 +74,8 @@ SPELUNKBOT_API double GetDuck(void);
 SPELUNKBOT_API double GetHanging(void);
 SPELUNKBOT_API double GetRopep(void);
 
+
+// FAMW MODIFICATIONS
+SPELUNKBOT_API double GetShouldSuicide(void);
+
 #pragma endregion

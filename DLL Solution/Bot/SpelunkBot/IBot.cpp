@@ -40,6 +40,10 @@ void IBot::InitialiseVariables()
 	_ropep = false;
 	_hanging = false;
 	_isHanging = false;
+
+
+	// FAMW MODIFICATIONS
+	_shouldSuicide = false;
 }
 
 void IBot::InitialiseDLLFunctions()
@@ -119,6 +123,7 @@ void IBot::Reset()
 	_goLeft = false;
 	_jump = false;
 	_attack = false;
+	_shouldSuicide = false;
 }
 
 void IBot::UpdateBotPosition(double nodeX, double nodeY)

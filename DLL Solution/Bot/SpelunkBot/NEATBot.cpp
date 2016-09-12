@@ -22,7 +22,10 @@ void NEATBot::Update()
 	//std::cout << "Time left: " << GetSecondsLeft() << std::endl;
 	
 	if(IsIdleTooLong())
+	{
 		std::cout << "PLAYER IS IDLE!" << std::endl;
+		_shouldSuicide = true;
+	}
 
 	// Update organism's fitness
 	UpdateFitness();
@@ -46,6 +49,8 @@ void NEATBot::Reset()
 	_goLeft = false;
 	_jump = false;
 	_attack = false;
+
+	_shouldSuicide = false;
 }
 
 void NEATBot::NewLevel()
@@ -194,9 +199,11 @@ bool NEATBot::IsIdleTooLong()
 	if(lastX != _playerPositionXNode || lastY != _playerPositionYNode)
 	{
 		std::cout << "we moved" << std::endl;
-		// Update our last time moved
+		// Update our last position
 		lastX = _playerPositionXNode;
 		lastY = _playerPositionYNode;
+		// Update out last time moved
+		lastTimeMoved = GetTimeElapsed();
 	}
 	// We have not moved
 	else

@@ -185,6 +185,14 @@ SPELUNKBOT_API double GetRopep(void)
 	return bot->GetRopep();
 }
 
+
+// FAMW MODIFICATIONS
+SPELUNKBOT_API double GetShouldSuicide(void)
+{
+	return bot->GetShouldSuicide();
+}
+
+
 #pragma endregion
 
 #pragma region Bot Logic

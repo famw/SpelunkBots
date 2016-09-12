@@ -107,6 +107,10 @@ public:
 	bool _hanging;
 	bool _ropep;
 
+
+	// FAMW MODIFICATIONS
+	bool _shouldSuicide;
+
 public:
 	IBot();
 	~IBot();
@@ -269,6 +273,14 @@ public:
 	{
 		return _waitTimer;
 	}
+
+
+	// FAMW MODIFICATIONS
+	inline double GetShouldSuicide(void)
+	{
+		return ConvertBoolToDouble(_shouldSuicide);
+	}
+
 
 	virtual void Update() = 0;
 	virtual void Reset();
