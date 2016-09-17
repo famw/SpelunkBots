@@ -13,6 +13,8 @@ declare neat_dir=${bot_dir}/lib/NEAT
 declare bt_dir=${bot_dir}/lib/BehaviorTree
 declare spelunky_dir=${initial_dir}/../Source/spelunky_1_1/
 
+declare cmd=${1:-main}
+
 build_dll() {
 	echo "Building Bot and SpelunkBots DLLs..."
 
@@ -49,6 +51,31 @@ build_lib() {
 	echo "done."
 }
 
+clean() {
+	echo "========================="
+	echo "CLEANING DLL SOLUTION..."
+	echo "========================="
+
+    echo "Cleaning NEAT"
+    cd "${neat_dir}"
+    make clean
+
+    echo "Cleaning BehaviorTrees"
+    cd "${bt_dir}"
+    make clean
+
+	echo "Cleaning Bot DLL..."
+	cd "${bot_dir}"
+	make clean
+	echo "Cleaning SpelunkBots DLL..."
+	cd "${spelunkbots_dir}"
+	make clean
+
+	echo "done."
+
+	echo "done."
+}
+
 main() {
 	echo "========================="
 	echo "BUILDING DLL SOLUTION..."
@@ -63,4 +90,8 @@ main() {
 	echo "========================="
 }
 
-main
+if [ $cmd == "main" ]; then
+    main
+else
+    clean
+fi
