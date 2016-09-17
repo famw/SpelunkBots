@@ -26,9 +26,8 @@ DISPLAY=:1 wine /path/to/app.exe
 
 ## 4. View results
 
-Open a remote connection to vnc://localhost:5900 and watch the application
+Open a remote connection to `vnc://localhost:5900` and watch the application
 running.
 
-There are lots of VNC clients (see:
-https://help.ubuntu.com/community/VNC/Clients). But I think that using the one
-that comes with the distro is enough.
+> See: https://help.ubuntu.com/community/VNC/Clients. But I think that using
+> the one that comes with the distro is enough.
