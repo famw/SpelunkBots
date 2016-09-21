@@ -10,7 +10,6 @@ declare initial_dir=$(pwd)/$(dirname "${0}")
 declare bot_dir=${initial_dir}/Bot
 declare spelunkbots_dir=${initial_dir}/Spelunkbots
 declare neat_dir=${bot_dir}/lib/NEAT
-declare bt_dir=${bot_dir}/lib/BehaviorTree
 declare spelunky_dir=${initial_dir}/../Source/spelunky_1_1/
 
 declare cmd=${1:-main}
@@ -44,10 +43,6 @@ build_lib() {
 	cd "${neat_dir}"
 	make
 
-    echo "Building BehaviorTrees"
-    cd "${bt_dir}"
-    CC=${CC} make
-
 	echo "done."
 }
 
@@ -60,10 +55,6 @@ clean() {
     cd "${neat_dir}"
     make clean
 
-    echo "Cleaning BehaviorTrees"
-    cd "${bt_dir}"
-    make clean
-
 	echo "Cleaning Bot DLL..."
 	cd "${bot_dir}"
 	make clean
@@ -71,9 +62,9 @@ clean() {
 	cd "${spelunkbots_dir}"
 	make clean
 
-	echo "done."
-
-	echo "done."
+	echo "========================="
+	echo "DONE."
+	echo "========================="
 }
 
 main() {

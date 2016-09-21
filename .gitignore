@@ -209,6 +209,7 @@ screenshot*.png
 
 # Vim swap files
 *.swp
+*.swo
 
 # Useless Spelunky files
 stats.txt
