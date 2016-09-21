@@ -4,12 +4,7 @@
 
 #include "IBot.h"
 
-#include "time.h"
-#include "../lib/BehaviorTree/src/BehaviorTree.h"
-#include "../lib/BehaviorTree/src/Selector.h"
-#include "../lib/BehaviorTree/src/Sequence.h"
-
-using namespace bt;
+#include "bt.h"
 
 class BehaviorTreeBot : public IBot
 {
@@ -22,6 +17,6 @@ public:
 	void Reset()    override;
 	void NewLevel() override;
 
-    // BehaviorTree experiment
-    BehaviorTree* bt;
+	// Behavior Tree
+	bt::BehaviorTree tree;
 };

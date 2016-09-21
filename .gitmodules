@@ -1,0 +1,3 @@
+[submodule "DLL Solution/Bot/lib/bt"]
+	path = DLL Solution/Bot/lib/bt
+	url = https://github.com/martinduartemore/bt.git

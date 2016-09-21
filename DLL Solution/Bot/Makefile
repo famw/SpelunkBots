@@ -27,7 +27,6 @@ OBJECTS= \
 
 LIB_OBJECTS= \
 	$(LIB)/NEAT/*.o \
-	$(LIB)/BehaviorTree/build/*.o
 
 all: build_dir Bot.dll Bot.lib
 
@@ -40,10 +39,10 @@ build_dir:
 	mkdir -p $(BUILD)
 
 $(BUILD)/%.o: $(SRCDIR)/%.cpp
-	$(CPP) $(FLAGS) -I $(INCDIR) -shared -o $@ -c $<
+	$(CPP) $(FLAGS) -I $(INCDIR) -I$(LIB)/bt/include -shared -o $@ -c $<
 
 Bot.dll: $(OBJECTS)
-	$(CPP) $(FLAGS) -I $(INCDIR) \
+	$(CPP) $(FLAGS) -I$(INCDIR) \
 		-shared $(LIB_OBJECTS) $(OBJECTS) \
 		$(SRCDIR)/dllmain.cpp -o Bot.dll
 

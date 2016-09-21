@@ -1,24 +1,21 @@
 #include "BehaviorTreeBot.h"
 
-using namespace std;
-using namespace bt;
-
-class MoveBehavior : public Behavior
+class MoveBehavior : public bt::Leaf
 {
 private:
-    BehaviorTreeBot* bot;
-    double prevXNode = -1;
-    double prevYNode = -1;
-    bool lookingRight = true;
+	BehaviorTreeBot *bot;
+	double prevXNode{-1};
+	double prevYNode{-1};
+	bool lookingRight{true};
 public:
-    MoveBehavior(BehaviorTreeBot* bot)
-    {
-        this->bot = bot;
-    }
+	MoveBehavior(BehaviorTreeBot *bot)
+	{
+		this->bot = bot;
+	}
 
-    Status update()
-    {
-        double x = this->bot->_playerPositionXNode;
+	bt::Node::Status update() override
+	{
+		double x = this->bot->_playerPositionXNode;
         double y = this->bot->_playerPositionYNode;
 
         if(this->bot->_goRight)
@@ -44,30 +41,25 @@ public:
             }
         }
 
-        return SUCCESS;
-    }
+        return bt::Node::Status::Success;
+	}
 };
 
 BehaviorTreeBot::BehaviorTreeBot()
 {
-    Sequence* s = new Sequence();
-    Behavior* m = new MoveBehavior(this);
-
-    s->add(m);
-
-    cout << "Init BehaviorTreeBot" << endl;
-    bt = new BehaviorTree(*s);
+	std::cout << "Init BehaviorTreeBot" << std::endl;
+	auto moveBehavior = std::make_shared<MoveBehavior>(this);
+	tree.setRoot(moveBehavior);
 }
 
 BehaviorTreeBot::~BehaviorTreeBot()
 {
-    cout << "Destroy BehaviorTreeBot" << endl;
-    //bt.stop();
+	std::cout << "Destroy BehaviorTreeBot" << std::endl;
 }
 
 void BehaviorTreeBot::Update()
 {
-    bt->step();
+	tree.update();
 }
 
 void BehaviorTreeBot::Reset()
