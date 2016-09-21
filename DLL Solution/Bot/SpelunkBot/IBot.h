@@ -110,6 +110,7 @@ public:
 
 	// FAMW MODIFICATIONS
 	bool _shouldSuicide;
+	bool _run;
 
 public:
 	IBot();
@@ -279,6 +280,11 @@ public:
 	inline double GetShouldSuicide(void)
 	{
 		return ConvertBoolToDouble(_shouldSuicide);
+	}
+
+	inline double GetRun(void)
+	{
+		return ConvertBoolToDouble(_run);
 	}
 
 

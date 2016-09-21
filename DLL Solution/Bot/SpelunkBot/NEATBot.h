@@ -6,9 +6,9 @@
 
 // NEAT includes
 #include "time.h"
-#include "../lib/NEAT/neat.h"
-#include "../lib/NEAT/population.h"
-#include "../lib/NEAT/genome.h"
+#include "NEAT/neat.h"
+#include "NEAT/population.h"
+#include "NEAT/genome.h"
 
 enum Output
 {

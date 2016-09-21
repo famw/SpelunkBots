@@ -77,5 +77,6 @@ SPELUNKBOT_API double GetRopep(void);
 
 // FAMW MODIFICATIONS
 SPELUNKBOT_API double GetShouldSuicide(void);
+SPELUNKBOT_API double GetRun(void);
 
 #pragma endregion

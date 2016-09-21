@@ -39,7 +39,7 @@ build_dir:
 	mkdir -p $(BUILD)
 
 $(BUILD)/%.o: $(SRCDIR)/%.cpp
-	$(CPP) $(FLAGS) -I $(INCDIR) -I$(LIB)/bt/include -shared -o $@ -c $<
+	$(CPP) $(FLAGS) -I $(INCDIR) -I$(LIB) -I$(LIB)/bt/include -shared -o $@ -c $<
 
 Bot.dll: $(OBJECTS)
 	$(CPP) $(FLAGS) -I$(INCDIR) \

@@ -44,6 +44,7 @@ void IBot::InitialiseVariables()
 
 	// FAMW MODIFICATIONS
 	_shouldSuicide = false;
+	_run = false;
 }
 
 void IBot::InitialiseDLLFunctions()
@@ -113,6 +114,7 @@ void IBot::InitialiseDLLFunctions()
 	IsNodePassable = (IsNodePassablePROC)GetProcAddress(spelunkbots_hModule, "IsNodePassable");
 
 
+	// FAMW MODIFICATIONS
 	GetTimeElapsed = (GetTimeElapsedPROC)GetProcAddress(spelunkbots_hModule, "GetTimeElapsed");
 	GetSecondsLeft = (GetSecondsLeftPROC)GetProcAddress(spelunkbots_hModule, "GetSecondsLeft");
 }
@@ -124,6 +126,7 @@ void IBot::Reset()
 	_jump = false;
 	_attack = false;
 	_shouldSuicide = false;
+	_run = false;
 }
 
 void IBot::UpdateBotPosition(double nodeX, double nodeY)

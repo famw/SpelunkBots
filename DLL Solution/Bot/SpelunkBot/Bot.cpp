@@ -191,6 +191,10 @@ SPELUNKBOT_API double GetShouldSuicide(void)
 {
 	return bot->GetShouldSuicide();
 }
+SPELUNKBOT_API double GetRun(void)
+{
+	return bot->GetRun();
+}
 
 
 #pragma endregion
