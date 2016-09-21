@@ -197,8 +197,8 @@ FakesAssemblies/
 
 *.o
 
-# Project Files
 
+# Project Files
 DLL\ Solution/**/*.dll
 DLL\ Solution/**/*.lib
 Source/**/*.dll
@@ -206,10 +206,12 @@ Performance
 *.exe
 screenshot*.png
 
-
 # Vim swap files
 *.swp
 *.swo
 
 # Useless Spelunky files
 stats.txt
+
+# NEAT genomes
+Source/spelunky_1_1/genomes/*
