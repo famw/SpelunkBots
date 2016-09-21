@@ -214,4 +214,4 @@ screenshot*.png
 stats.txt
 
 # NEAT genomes
-Source/spelunky_1_1/genomes/*
+#Source/spelunky_1_1/neat/genomes/*

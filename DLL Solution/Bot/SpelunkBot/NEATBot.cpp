@@ -51,6 +51,7 @@ void NEATBot::Reset()
 	_attack = false;
 
 	_shouldSuicide = false;
+	_run = false;
 }
 
 void NEATBot::NewLevel()
@@ -69,13 +70,13 @@ void NEATBot::InitializeNeat()
 
 	// Load parameters file
 	std::cout << "Reading parameters file..." << std::endl;
-	NEAT::load_neat_params("neat_parameters.ne", false); // true = print params
+	NEAT::load_neat_params("neat/neat_parameters.ne", false); // true = print params
 
 	// Load starter genome file
 	std::cout << "Loading starter genome file..." << std::endl;
 	char curword[20];
 	int id;
-	std::ifstream iFile("neat_startgenes", std::ios::in);
+	std::ifstream iFile("neat/neat_startgenes", std::ios::in);
 	iFile >> curword;
 	iFile >> id;
 	genome = std::make_unique<NEAT::Genome>(id, iFile);
@@ -115,7 +116,7 @@ void NEATBot::ResetExperiment()
 		population->epoch(currentGeneration);
 
 		// TODO(Martin): log stats properly
-		population->print_to_file_by_species("test.pop");
+		population->print_to_file_by_species("neat/genomes/test.pop");
 
 		std::cout << "Reseting population..." << std::endl;
 		std::cout << "Moving to new generation..." << std::endl << std::endl;
