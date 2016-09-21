@@ -57,6 +57,6 @@ public:
 	// NEAT idle control
 	double lastX{0}, lastY{0};
 	double lastTimeMoved{0};
-	double maxIdleTime{3.0};
+	double maxIdleTime{2.0};
 };
 

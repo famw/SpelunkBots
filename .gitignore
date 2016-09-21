@@ -212,6 +212,7 @@ screenshot*.png
 
 # Useless Spelunky files
 stats.txt
+Source/spelunky_1_1/level_layout.txt
 
 # NEAT genomes
 Source/spelunky_1_1/neat/genomes/*

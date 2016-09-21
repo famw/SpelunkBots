@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+
 #include "NEATBot.h"
 
 NEATBot::NEATBot()
@@ -16,7 +18,6 @@ NEATBot::~NEATBot()
 
 void NEATBot::Update()
 {
-
 	//GetTickCount();
 	//std::cout << "Time elapsed: " << GetTimeElapsed() << std::endl;
 	//std::cout << "Time left: " << GetSecondsLeft() << std::endl;
@@ -26,9 +27,6 @@ void NEATBot::Update()
 		std::cout << "PLAYER IS IDLE!" << std::endl;
 		_shouldSuicide = true;
 	}
-
-	// Update organism's fitness
-	UpdateFitness();
 		
 	// Set up inputs (sensory nodes)
 	ConfigureInputs();
@@ -41,6 +39,9 @@ void NEATBot::Update()
 	ConfigureOutputs();
 	// Act based on outputs
 	ExecuteOutputs();
+	
+	// Update organism's fitness
+	UpdateFitness();
 }
 
 void NEATBot::Reset()
@@ -66,7 +67,8 @@ void NEATBot::InitializeNeat()
 	std::cout << "BEGIN NEAT SETUP..." << std::endl;
 
 	// Seed the random-number generator
-	srand((unsigned)time(NULL));
+	//srand((unsigned)time(NULL));
+	srand(12345);
 
 	// Load parameters file
 	std::cout << "Reading parameters file..." << std::endl;
@@ -111,18 +113,22 @@ void NEATBot::ResetExperiment()
 	if(currentOrganism == NEAT::pop_size -1)
 	{
 		std::cout << "Reached end of population" << std::endl;
-		std::cout << "Calculating epoch..." << std::endl;
+		std::cout << "HIGHEST FITNESS: " << population->highest_fitness << std::endl;
+
+		// Log generation's population
+		std::string name = "neat/genomes/gen_" + std::to_string(currentGeneration) + ".pop";
+		char *fileName = &name[0u]; // NEAT API requires char* ...
+		population->print_to_file_by_species(fileName);
+		delete fileName; // Make sure we deallocate this...
+
 		// Activate population epoch
+		std::cout << "Calculating epoch..." << std::endl;
 		population->epoch(currentGeneration);
 
-		// TODO(Martin): log stats properly
-		population->print_to_file_by_species("neat/genomes/test.pop");
-
+		// Reset
 		std::cout << "Reseting population..." << std::endl;
 		std::cout << "Moving to new generation..." << std::endl << std::endl;
-		// Reset our population
 		currentOrganism = 0;
-		// Advance to next generation
 		currentGeneration++;
 
 	}
@@ -189,6 +195,7 @@ void NEATBot::UpdateFitness()
 		std::cout << "Found the exit" << std::endl;
 		currentFitness += scoreExit;
 		organism->winner = true;
+		_shouldSuicide = true;
 	}
 }
 
@@ -199,7 +206,6 @@ bool NEATBot::IsIdleTooLong()
 	// If we changed positions (node)
 	if(lastX != _playerPositionXNode || lastY != _playerPositionYNode)
 	{
-		std::cout << "we moved" << std::endl;
 		// Update our last position
 		lastX = _playerPositionXNode;
 		lastY = _playerPositionYNode;
@@ -209,7 +215,6 @@ bool NEATBot::IsIdleTooLong()
 	// We have not moved
 	else
 	{
-		std::cout << "we are idle" << std::endl;
 		// Check if it's been too long
 		if(GetTimeElapsed() - lastTimeMoved >= maxIdleTime)
 		{
