@@ -8,6 +8,14 @@ For more information, check out the SpelunkBots homepage at http://t2thompson.co
 
 This fork allows us to run SpelunkBots on Linux.
 
+## Before Starting
+
+After cloning the repo, you must get all submodules, you can do that running:
+
+```bash
+git submodule init ; git submodule update
+```
+
 ## Dependencies
 
 Since SpelunkBots is built using GameMaker 8, we are not able to run it on Linux
