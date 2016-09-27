@@ -110,7 +110,7 @@ void NEATBot::ResetExperiment()
 	std::cout << "---------------" << std::endl;
 
 	// If we have reached the end of the population
-	if(currentOrganism == NEAT::pop_size -1)
+	if(currentOrganism == population->organisms.size() - 1)
 	{
 		std::cout << "Reached end of population" << std::endl;
 		std::cout << "HIGHEST FITNESS: " << population->highest_fitness << std::endl;
