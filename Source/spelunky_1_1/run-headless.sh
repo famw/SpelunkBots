@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 declare -r DISP=":1"
-declare -r RESOLUTION="1024x768"
+declare -r RESOLUTION="1024x720"
 declare -r VNC_PORT=5999
 
 create_display() {
