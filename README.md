@@ -82,9 +82,13 @@ wine Game_Maker.exe
 
 ### Running the Game "Headless"
 
-In order to be able to train our bots, we should run the game "headless" (
-without showing graphics). Since SpelunkBots require to have a display, we can
-simulate one using [Xvfb](https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml).
+> [Click here](#runner-script) If you don't want to run all those steps
+> manually.
+
+In order to be able to train our bots, we should run the game "headless"
+(without showing graphics). Since SpelunkBots require to have a display, we can
+simulate one using
+[Xvfb](https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml).
 
 First of all, you need to have it installed.
 
@@ -122,3 +126,20 @@ run:
 ```bash
 ffmpeg -y -video_size 1024x720 -framerate 30 -f x11grab -i :1.0 record.mp4
 ```
+
+#### Runner Script
+
+If you want to run all those steps automatically, please make sure you have the
+following dependencies installed:
+
+- Xvfb
+- x11vnc
+- vinagre
+
+Then, run the runner script (it is inside `Source/spelunky_1_1`) by doing this:
+
+```bash
+./run-headless.sh
+```
+
+You just need to make sure that you generated the `spelunkbots.exe` file.
