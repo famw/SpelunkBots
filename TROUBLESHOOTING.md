@@ -7,7 +7,7 @@ In case of any problems running it locally, try to do the things described here.
 Make sure you have `xvfb` installed, then, create a new screen:
 
 ```bash
-Xvfb :1 -screen 0 1280x640x24
+Xvfb :1 -screen 0 1024x720x24
 ```
 
 ## 2. Create a vnc server for xvfb display
