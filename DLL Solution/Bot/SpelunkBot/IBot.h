@@ -68,6 +68,7 @@ typedef double(__cdecl *IsNodePassablePROC)(double x, double y, double usingPixe
 
 typedef double(__cdecl *GetTimeElapsedPROC)();
 typedef double(__cdecl *GetSecondsLeftPROC)();
+typedef double(__cdecl *GetTestSecondsPROC)();
 
 #pragma endregion
 
@@ -181,6 +182,7 @@ public:
 
 	GetTimeElapsedPROC GetTimeElapsed;
 	GetSecondsLeftPROC GetSecondsLeft;
+	GetTestSecondsPROC GetTestSeconds;
 
 	inline double GetHasGoal(void)
 	{

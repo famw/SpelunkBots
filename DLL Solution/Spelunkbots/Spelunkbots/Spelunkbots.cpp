@@ -1,7 +1,7 @@
 // Spelunkbots.cpp : Defines the exported functions for the DLL application.
 // Spelunkbots Source code written by Daniel Scales t:@DanielCake
 
-#include "stdafx.h"
+
 #include "PerformanceStats.h"
 #include <windows.h>
 #include <iostream>
@@ -1838,4 +1838,9 @@ GMEXPORT double GetTimeElapsed()
 GMEXPORT double GetSecondsLeft()
 {
 	return _secondsLeft;
+}
+
+GMEXPORT double GetTestSeconds()
+{
+	return _testSeconds;
 }

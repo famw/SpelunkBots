@@ -117,6 +117,7 @@ void IBot::InitialiseDLLFunctions()
 	// FAMW MODIFICATIONS
 	GetTimeElapsed = (GetTimeElapsedPROC)GetProcAddress(spelunkbots_hModule, "GetTimeElapsed");
 	GetSecondsLeft = (GetSecondsLeftPROC)GetProcAddress(spelunkbots_hModule, "GetSecondsLeft");
+	GetTestSeconds = (GetTestSecondsPROC)GetProcAddress(spelunkbots_hModule, "GetTestSeconds");
 }
 
 void IBot::Reset()

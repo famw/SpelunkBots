@@ -36,7 +36,6 @@ public:
 	void ConfigureInputs();
 	void ConfigureOutputs();
 	void ExecuteOutputs();
-	void UpdateFitness();
 	bool IsIdleTooLong();
 
 	// NEAT experiment
@@ -45,18 +44,19 @@ public:
 	NEAT::Organism * organism; //TODO(Martin): remove this raw pointer :(
 	int currentGeneration;
 	int currentOrganism;
-	float currentFitness;
 
 	// NEAT controls
 	double input[2];
 	bool output[OUTPUT_MAX];
 
-	// NEAT fitness values
-	int scoreExit{1000};
+	// NEAT fitness
+	float getFitness();
+	bool isFirstFrame{true};
+	int startX{0}, startY{0};
 
 	// NEAT idle control
 	double lastX{0}, lastY{0};
 	double lastTimeMoved{0};
-	double maxIdleTime{2.0};
+	double maxIdleTime{2.5};
 };
 
