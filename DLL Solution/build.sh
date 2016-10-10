@@ -46,25 +46,25 @@ build_lib() {
 	echo "done."
 }
 
-clean() {
-	echo "========================="
-	echo "CLEANING DLL SOLUTION..."
-	echo "========================="
+clean_libs() {
+	echo "Cleaning NEAT"
+	cd "${neat_dir}"
+	make clean
+}
 
-    echo "Cleaning NEAT"
-    cd "${neat_dir}"
-    make clean
-
+clean_spelunkbots() {
 	echo "Cleaning Bot DLL..."
 	cd "${bot_dir}"
 	make clean
+
 	echo "Cleaning SpelunkBots DLL..."
 	cd "${spelunkbots_dir}"
 	make clean
+}
 
-	echo "========================="
-	echo "DONE."
-	echo "========================="
+clean_all() {
+	clean_libs
+	clean_spelunkbots
 }
 
 main() {
@@ -83,6 +83,8 @@ main() {
 
 if [ $cmd == "main" ]; then
     main
+elif [ $cmd == "clean" ]; then
+    clean_spelunkbots
 else
-    clean
+    clean_all
 fi

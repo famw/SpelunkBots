@@ -46,7 +46,10 @@ public:
 	int currentOrganism;
 
 	// NEAT controls
-	double input[2];
+	static const int inputRadius{2};
+	static const int inputBoxSize{(inputRadius*2+1)*(inputRadius*2+1)};
+	static const int inputSize{inputBoxSize+1}; // +1 -> bias input node
+	double input[inputSize];
 	bool output[OUTPUT_MAX];
 
 	// NEAT fitness

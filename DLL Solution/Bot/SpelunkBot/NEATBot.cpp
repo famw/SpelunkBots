@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <string>
 
 #include "NEATBot.h"
 
@@ -149,8 +150,37 @@ void NEATBot::ResetExperiment()
 
 void NEATBot::ConfigureInputs()
 {
-	input[0] = 1.0; // Bias
-	input[1] = 1.0;
+	int currentInput = 0;
+	for(int dy=-inputRadius; dy<=inputRadius; dy++)
+	{
+		for(int dx=-inputRadius; dx<=inputRadius; dx++)
+		{
+			int x = _playerPositionXNode + dx;
+			int y = _playerPositionYNode + dy;
+
+			int tile = 0;
+			//bool enemy = 0;
+			if(x >= 0 && x<=42 && y >=0 && y<=34) // level boundaries
+			{
+				tile = GetNodeState(x,y,0);
+				//enemy = IsEnemyInNode(x,y,0);
+			}
+
+			// map out tiles to our desired sensorial inputs
+			switch(tile)
+			{
+				case 0: tile=0; break;		// empty
+				case 1: tile=1; break;		// terrain
+				case 3: tile=2; break;		// exit
+				case 10: tile=-1; break;	// spikes
+				default: tile=0; break;		// everything else
+			}
+
+			input[currentInput++] = tile;
+		}
+	}
+
+	input[inputSize-1] = 1.0; // bias
 }
 
 void NEATBot::ConfigureOutputs()
