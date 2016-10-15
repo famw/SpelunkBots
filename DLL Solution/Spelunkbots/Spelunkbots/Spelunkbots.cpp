@@ -115,14 +115,23 @@ bool coolGlasses;
 bool shopkeepersAngered;
 
 //Level Control
-vector<char*> _levels;				// test levels
-vector<char*> _seeds;				// marathon level seeds
+//vector<char*> _levels;				// test levels
+//vector<char*> _seeds;				// marathon level seeds
 int _levelNum = 0;					// the current level or seed number
 int _tests = 0;						// number of tests that have been run
 int _maxTests = 0;					// maximum number of tests to run
 double _testSeconds = 0.0;			// total seconds given to complete level.
 double _secondsLeft = 0.0;			// seconds left to complete level.
 double _timeMillSeconds = NULL;		// seconds passed in milliseconds
+
+
+// FAMW MODIFICATIONS
+struct LevelInfo
+{
+	char name[50]; // max level name = array size
+};
+vector<LevelInfo> levels;
+
 
 //Performance Stats
 PerformanceStats pStats;
@@ -1651,8 +1660,13 @@ GMEXPORT double Output(char* output)
 */
 GMEXPORT double SetLevelData(char* level)
 {
-	_levels.insert(_levels.end(), level);
-	cout << "Level Added: " << _levels.at(_levels.size()-1) << endl;
+	LevelInfo li;
+	strcpy(li.name, level);
+	levels.push_back(li);
+	cout << "Level Added: " << li.name << endl;
+
+	//_levels.insert(_levels.end(), level);
+	//cout << "Level Added: " << _levels.at(_levels.size()-1) << endl;
 	return 1;
 }
 
@@ -1662,8 +1676,13 @@ GMEXPORT double SetLevelData(char* level)
 */
 GMEXPORT double SetSeedData(char* seed)
 {
-	_seeds.insert(_seeds.end(), seed);
-	cout << "Seed Added: " << _seeds.at(_seeds.size() - 1) << endl;
+	LevelInfo li;
+	strcpy(li.name, seed);
+	levels.push_back(li);
+	cout << "Seed Added: " << li.name << endl;
+
+	//_seeds.insert(_seeds.end(), seed);
+	//cout << "Seed Added: " << _seeds.at(_seeds.size() - 1) << endl;
 	return 1;
 }
 
@@ -1755,12 +1774,18 @@ GMEXPORT double CalculatePerformance() // run this before you run check next lev
 */
 GMEXPORT char* CheckNextLevel()
 {
+	LevelInfo li = levels.at(_levelNum);
+	return li.name;
+
+	/*
 	string testType = pStats.GetTestType();
 
 	if (testType.compare("TESTMAPS") == 0)
 	{
+
 		if (strcmp(_levels.at(_levelNum),"") != 0)
 		{
+		
 			return _levels.at(_levelNum);
 		}
 		else
@@ -1784,6 +1809,7 @@ GMEXPORT char* CheckNextLevel()
 	}
 
 	return "";
+	*/
 }
 
 /**
