@@ -217,28 +217,56 @@ void NEATBot::ExecuteOutputs()
 
 float NEATBot::getFitness()
 {
-	// distance travelled (manhattan distance)
-	float distance = std::fabs(startX - _playerPositionXNode) + std::fabs(startY - _playerPositionYNode);
-	float maxDistance = 70.0f; // (1,1) -> (40,32)
+	// distance travelled (based on manhattan distance)
+	float distX = std::fabs(startX - _playerPositionXNode);
+	float distY = std::fabs(startY - _playerPositionYNode);
+	float distance = distX + distY;
+	float distance2 = distX + distY*2;
+	float distance3 = distX + distY*distY;
+	float maxDistance = 39 + 31; // (x=39,y=31): (1,1) -> (40,32)
 	float normalizedDistance = distance / maxDistance;
 	if(GetNodeState(_playerPositionXNode, _playerPositionYNode, NODE_COORDS) == spExit)
 	{
 		normalizedDistance = 1.0f;
 	}
+	// sanity check
+	if(distance <= 0.0f) distance = 0.0001f;
+	if(distance2 <= 0.0f) distance = 0.0001f;
+	if(distance3 <= 0.0f) distance = 0.0001f;
 	std::cout << "DISTANCE TRAVELLED: " << distance << std::endl;
+	std::cout << "DISTANCE TRAVELLED (Y*2): " << distance2 << std::endl;
+	std::cout << "DISTANCE TRAVELLED (Y^2): " << distance3 << std::endl;
 	std::cout << "NORMALIZED DISTANCE: " << normalizedDistance << std::endl;
+	std::cout << "NORMALIZED DISTANCE (Y*2): " << distance2/maxDistance << std::endl;
+	std::cout << "NORMALIZED DISTANCE (Y^2):" << distance3/maxDistance << std::endl;
 
 	// time taken (penalize if idle)
-	float normalizedTime = 0.0f;
-	if(!IsIdleTooLong()) normalizedTime = (GetTestSeconds() - GetTimeElapsed()) / GetTestSeconds();
+	float normalizedTime = 0.0001f; // sanity check
+	if(!IsIdleTooLong() && GetTimeElapsed() < GetTestSeconds()) 
+	{
+		normalizedTime = (GetTestSeconds() - GetTimeElapsed())
+			/ GetTestSeconds();
+	}
+
 	std::cout << "NORMALIZED TIME: " << normalizedTime << std::endl;
 
 	// calculate fitness
-	float fitness = (normalizedDistance + normalizedTime) / 2.0f; // avg
-	if(fitness == 0.0f) fitness == 0.0001f; // sanity check
-	std::cout << "FITNESS (AVG): " << fitness << std::endl;
+	float fitnessAM = (normalizedDistance + normalizedTime) / 2.0f;
+	float fitnessWAM = 0.6f*normalizedDistance + 0.4f*normalizedTime;
+	float fitnessDT = normalizedDistance / normalizedTime;
+	float fitnessHM = 2.0f/((1.0f/normalizedDistance)+(1.0f/normalizedTime));
+	// sanity check
+	if(fitnessAM <= 0.0f) fitnessAM == 0.0001f;
+	if(fitnessWAM <= 0.0f) fitnessWAM == 0.0001f;
+	if(fitnessDT <= 0.0f) fitnessDT == 0.0001f;
+	if(fitnessHM <= 0.0f) fitnessHM == 0.0001f;
 
-	return fitness;
+	std::cerr << "FITNESS (AVG): " << fitnessAM << std::endl;
+	std::cerr << "FITNESS (WEIGHTED AVG): " << fitnessWAM << std::endl;
+	std::cerr << "FITNESS (D/T): " << fitnessDT << std::endl;
+	std::cerr << "FITNESS (HM): " << fitnessHM << std::endl;
+
+	return fitnessAM;
 }
 
 bool NEATBot::IsIdleTooLong()
