@@ -77,17 +77,11 @@ void NEATBot::InitializeNeat()
 	NEAT::load_neat_params("neat/neat_parameters.ne", false); // true = print params
 
 	std::cout << "Loading starter genome file..." << std::endl;
-	char curword[20];
-	int id;
-	std::ifstream iFile("neat/neat_startgenes", std::ios::in);
-	iFile >> curword;
-	iFile >> id;
-	genome = std::make_unique<NEAT::Genome>(id, iFile);
-	iFile.close();
+	genome = std::make_unique<NEAT::Genome>("neat/neat_startgenes");
 
 	std::cout << "Creating population..." << std::endl;
 	population = std::make_unique<NEAT::Population>(genome.get(), NEAT::pop_size);
-	//population = std::make_unique<NEAT::Population>("neat/gen_xxx.pop");
+	//population = std::make_unique<NEAT::Population>("neat/gen_16.pop");
 	// ^ example on how to read a population file with multiple genomes
 	population->verify();
 

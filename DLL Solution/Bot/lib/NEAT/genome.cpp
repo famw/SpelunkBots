@@ -226,6 +226,63 @@ Genome::Genome(int id, std::ifstream &iFile) {
 }
 
 
+// FAMW MODIFICATIONS
+Genome::Genome(const char *filename)
+{
+	char curword[128];  //max word size of 128 characters
+	char curline[1024]; //max line size of 1024 characters
+	char delimiters[] = " \n";
+
+	int id;
+
+	std::ifstream iFile(filename);
+	if (!iFile) {
+		std::cerr << "Can't open " << filename << " for input" << std::endl;
+		return;
+	}
+
+	while (!iFile.eof()) 
+	{
+		memset(curword, 0, sizeof curword);
+		iFile.getline(curline, sizeof(curline));
+		std::stringstream ss(curline);
+		ss >> curword;
+		
+		//Check for genome start
+		if (strcmp(curword,"genomestart")==0) 
+		{
+			ss >> id;
+			genome_id = id;
+		}
+		else if (strcmp(curword,"trait")==0)
+		{
+			Trait *newtrait;
+			char argline[1024];
+            		ss.getline(argline, 1024);
+			newtrait = new Trait(argline);
+			traits.push_back(newtrait);
+		}
+		else if (strcmp(curword,"node")==0)
+		{
+			NNode *newnode;
+			char argline[1024];
+            		ss.getline(argline, 1024);
+			newnode = new NNode(argline,traits);
+			nodes.push_back(newnode);
+		}
+		else if (strcmp(curword,"gene")==0)
+		{
+			Gene *newgene;
+			char argline[1024];
+			ss.getline(argline, 1024);
+			newgene = new Gene(argline,traits,nodes);
+			genes.push_back(newgene);
+		}
+	}	
+	iFile.close();
+}
+
+
 Genome::Genome(int new_id,int i, int o, int n,int nmax, bool r, double linkprob) {
 	int totalnodes;
 	bool *cm; //The connection matrix which will be randomized

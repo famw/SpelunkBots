@@ -70,6 +70,10 @@ namespace NEAT {
 		//This constructor assumes that some routine has already read in GENOMESTART
         Genome(int id, std::ifstream &iFile);
 
+
+		//FAMW MODIFICATIONS
+		Genome(const char *filename);
+
 		// This special constructor creates a Genome
 		// with i inputs, o outputs, n out of nmax hidden units, and random
 		// connectivity.  If r is true then recurrent connections will

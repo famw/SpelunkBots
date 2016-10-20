@@ -123,8 +123,8 @@ Population::Population(const char *filename) {
 		std::stringstream ss(curline);
 		ss >> curword;
 
-		std::cout << curline << std::endl;
-		std::cout << curword << std::endl;
+		//std::cout << curline << std::endl;
+		//std::cout << curword << std::endl;
 
 		//Check for genome start
 		if (strcmp(curword,"genomestart")==0) 
