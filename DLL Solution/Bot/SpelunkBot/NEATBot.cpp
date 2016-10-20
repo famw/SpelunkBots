@@ -87,6 +87,8 @@ void NEATBot::InitializeNeat()
 
 	std::cout << "Creating population..." << std::endl;
 	population = std::make_unique<NEAT::Population>(genome.get(), NEAT::pop_size);
+	//population = std::make_unique<NEAT::Population>("neat/gen_xxx.pop");
+	// ^ example on how to read a population file with multiple genomes
 	population->verify();
 
 	std::cout << "NEAT SETUP IS COMPLETE." << std::endl;

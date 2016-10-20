@@ -124,6 +124,10 @@ Genome::Genome(int id, std::ifstream &iFile) {
 
         //std::cout << curline << std::endl;
 
+		if(strcmp(curline, "")==0) {
+			iFile.getline(curline, sizeof(curline));
+		}
+
 		if (curwordnum > wordcount || wordcount == 0) {
 			iFile.getline(curline, sizeof(curline));
 			wordcount = NEAT::getUnitCount(curline, delimiters);
@@ -162,6 +166,7 @@ Genome::Genome(int id, std::ifstream &iFile) {
                 ss >> curword;
 			}
 			//cout<<endl;
+			iFile.getline(curline, sizeof(curline));
 		}
 
 		//Read in a trait
@@ -912,6 +917,34 @@ void Genome::print_to_filename(char *filename) {
 	//oFile.open(filename, std::ostream::Write);
 	print_to_file(oFile);
 	oFile.close();
+}
+
+void Genome::print_genome() {
+	std::vector<Trait*>::iterator curtrait;
+	std::vector<NNode*>::iterator curnode;
+	std::vector<Gene*>::iterator curgene;
+
+	int traitCount=0, nodeCount=0, geneCount=0;
+
+	//Output the traits
+	for(curtrait=traits.begin();curtrait!=traits.end();++curtrait) {
+		traitCount++;
+	}
+
+	//Output the nodes
+	for(curnode=nodes.begin();curnode!=nodes.end();++curnode) {
+		nodeCount++;
+	}
+
+	//Output the genes
+	for(curgene=genes.begin();curgene!=genes.end();++curgene) {
+		geneCount++;
+	}
+
+	std::cout <<
+		"TRAITS: " << traitCount <<
+		", NODES: " << nodeCount <<
+		", GENES: " << geneCount << std::endl;
 }
 
 int Genome::get_last_node_id() {

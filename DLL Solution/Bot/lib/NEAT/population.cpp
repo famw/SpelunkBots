@@ -94,105 +94,57 @@ Population::Population(std::vector<Genome*> genomeList, float power) {
 }
 
 Population::Population(const char *filename) {
+	winnergen=0;
+	highest_fitness=0.0;
+	highest_last_changed=0;
 
 	char curword[128];  //max word size of 128 characters
 	char curline[1024]; //max line size of 1024 characters
 	char delimiters[] = " \n";
+	int curwordnum = 0;
 
 	Genome *new_genome;
-
-	winnergen=0;
-
-	highest_fitness=0.0;
-	highest_last_changed=0;
 
 	cur_node_id=0;
 	cur_innov_num=0.0;
 
-	int curwordnum = 0;
-
 	std::ifstream iFile(filename);
-	if (!iFile) {
-		printf("Can't open genomes file for input");
+	if (!iFile)
+	{
+		std::cerr << "Can't open genomes file \'" << filename << "\' for input" << std::endl;
 		return;
 	}
 
-	else {
-		bool md = false;
-		char metadata[128];
-		//Loop until file is finished, parsing each line
-		while (!iFile.eof()) 
+	//Loop until file is finished, parsing each line
+	while (!iFile.eof()) 
+	{
+		memset(curword, 0, sizeof curword);
+		iFile.getline(curline, sizeof(curline));
+		std::stringstream ss(curline);
+		ss >> curword;
+
+		std::cout << curline << std::endl;
+		std::cout << curword << std::endl;
+
+		//Check for genome start
+		if (strcmp(curword,"genomestart")==0) 
 		{
-			iFile.getline(curline, sizeof(curline));
-            std::stringstream ss(curline);
-			//strcpy(curword, NEAT::getUnit(curline, 0, delimiters));
-            ss >> curword;
-            //std::cout << curline << std::endl;
+			int idcheck;
+			ss >> idcheck;
 
-			//Check for next
-			if (strcmp(curword,"genomestart")==0) 
-			{
-				//strcpy(curword, NEAT::getUnit(curline, 1, delimiters));
-				//int idcheck = atoi(curword);
+			new_genome=new Genome(idcheck,iFile);
+			organisms.push_back(new Organism(0,new_genome,1));
 
-                int idcheck;
-                ss >> idcheck;
+			if (cur_node_id<(new_genome->get_last_node_id()))
+				cur_node_id=new_genome->get_last_node_id();
 
-				// If there isn't metadata, set metadata to ""
-				if(md == false)  {
-					strcpy(metadata, "");
-				}
-				md = false;
-
-				new_genome=new Genome(idcheck,iFile);
-				organisms.push_back(new Organism(0,new_genome,1, metadata));
-				if (cur_node_id<(new_genome->get_last_node_id()))
-					cur_node_id=new_genome->get_last_node_id();
-
-				if (cur_innov_num<(new_genome->get_last_gene_innovnum()))
-					cur_innov_num=new_genome->get_last_gene_innovnum();
-			}
-			else if (strcmp(curword,"/*")==0) 
-			{
-				// New metadata possibly, so clear out the metadata
-				strcpy(metadata, "");
-				curwordnum=1;
-				//strcpy(curword, NEAT::getUnit(curline, curwordnum++, delimiters));
-                ss >> curword;
-
-				while(strcmp(curword,"*/")!=0)
-				{
-					// If we've started to form the metadata, put a space in the front
-					if(md) {
-						strncat(metadata, " ", 128 - strlen(metadata));
-					}
-
-					// Append the next word to the metadata, and say that there is metadata
-					strncat(metadata, curword, 128 - strlen(metadata));
-					md = true;
-
-					//strcpy(curword, NEAT::getUnit(curline, curwordnum++, delimiters));
-                    ss >> curword;
-				}
-			}
-			//Ignore comments - they get printed to screen
-			//else if (strcmp(curword,"/*")==0) {
-			//	iFile>>curword;
-			//	while (strcmp(curword,"*/")!=0) {
-			//cout<<curword<<" ";
-			//		iFile>>curword;
-			//	}
-			//	cout<<endl;
-
-			//}
-			//Ignore comments surrounded by - they get printed to screen
+			if (cur_innov_num<(new_genome->get_last_gene_innovnum()))
+				cur_innov_num=new_genome->get_last_gene_innovnum();
 		}
-
-		iFile.close();
-
-		speciate();
-
 	}
+
+	iFile.close();
+	speciate();
 }
 
 
