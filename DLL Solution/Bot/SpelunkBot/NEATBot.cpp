@@ -262,7 +262,7 @@ float NEATBot::getFitness()
 	std::cerr << "FITNESS (D/T): " << fitnessDT << std::endl;
 	std::cerr << "FITNESS (HM): " << fitnessHM << std::endl;
 
-	return fitnessAM;
+	return fitnessHM;
 }
 
 bool NEATBot::IsIdleTooLong()
