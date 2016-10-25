@@ -40,7 +40,6 @@ void NEATBot::Update()
 	// win condition
 	if(GetNodeState(_playerPositionXNode, _playerPositionYNode, NODE_COORDS) == spExit)
 	{
-		std::cout << "Found the exit" << std::endl;
 		organism->winner = true;
 		_shouldSuicide = true;
 	}
@@ -53,46 +52,44 @@ void NEATBot::Reset()
 	_goLeft = false;
 	_jump = false;
 	_attack = false;
-
 	_shouldSuicide = false;
 	_run = false;
 }
 
 void NEATBot::NewLevel()
 {
-	std::cout << "Resetting level..." << std::endl;
 	ResetExperiment();
 }
 
 void NEATBot::InitializeNeat()
 {
-	std::cout << "===============" << std::endl;
-	std::cout << "BEGIN NEAT SETUP..." << std::endl;
+	std::cerr << "===============" << std::endl;
+	std::cerr << "BEGIN NEAT SETUP..." << std::endl;
 
 	// Seed the random-number generator
 	//srand((unsigned)time(NULL));
 	srand(12345);
 
-	std::cout << "Reading parameters file..." << std::endl;
+	std::cerr << "Reading parameters file..." << std::endl;
 	NEAT::load_neat_params("neat/neat_parameters.ne", false); // true = print params
 
-	std::cout << "Loading starter genome file..." << std::endl;
+	std::cerr << "Loading starter genome file..." << std::endl;
 	genome = std::make_unique<NEAT::Genome>("neat/neat_startgenes");
 
-	std::cout << "Creating population..." << std::endl;
+	std::cerr << "Creating population..." << std::endl;
 	population = std::make_unique<NEAT::Population>(genome.get(), NEAT::pop_size);
 	//population = std::make_unique<NEAT::Population>("neat/gen_16.pop");
 	// ^ example on how to read a population file with multiple genomes
 	population->verify();
 
-	std::cout << "NEAT SETUP IS COMPLETE." << std::endl;
-	std::cout << "===============" << std::endl << std::endl;
+	std::cerr << "NEAT SETUP IS COMPLETE." << std::endl;
+	std::cerr << "===============" << std::endl << std::endl;
 
 	organism = population->organisms.at(0);
 
-	std::cout << "Beginning evaluation..." << std::endl;
-	std::cout << "GENERATION: " << currentGeneration << std::endl;
-	std::cout << "ORGANISM: " << currentOrganism << std::endl;
+	std::cerr << "Beginning evaluation..." << std::endl;
+	std::cerr << "GENERATION: " << currentGeneration << std::endl;
+	std::cerr << "ORGANISM: " << currentOrganism << std::endl << std::endl;
 }
 
 void NEATBot::ResetExperiment()
@@ -100,15 +97,15 @@ void NEATBot::ResetExperiment()
 	// Assign organism fitness
 	organism->fitness = getFitness();
 
-	std::cout << "Ended current evaluation..." << std::endl;
-	std::cout << "FITNESS : " << organism->fitness << std::endl;
-	std::cout << "---------------" << std::endl;
+	std::cerr << "Ended current evaluation..." << std::endl;
+	std::cerr << "FITNESS : " << organism->fitness << std::endl;
+	std::cerr << "---------------" << std::endl;
 
 	// If we have reached the end of the population
 	if(currentOrganism == population->organisms.size() - 1)
 	{
-		std::cout << "Reached end of population" << std::endl;
-		std::cout << "HIGHEST FITNESS: " << population->highest_fitness << std::endl;
+		std::cerr << "Reached end of population" << std::endl;
+		std::cerr << "HIGHEST FITNESS: " << population->highest_fitness << std::endl;
 
 		// Log generation's population
 		std::string name = "neat/genomes/gen_" + std::to_string(currentGeneration) + ".pop";
@@ -117,12 +114,12 @@ void NEATBot::ResetExperiment()
 		delete fileName; // Make sure we deallocate this...
 
 		// Activate population epoch
-		std::cout << "Calculating epoch..." << std::endl;
+		std::cerr << "Calculating epoch..." << std::endl;
 		population->epoch(currentGeneration);
 
 		// Reset
-		std::cout << "Reseting population..." << std::endl;
-		std::cout << "Moving to new generation..." << std::endl << std::endl;
+		std::cerr << "Reseting population..." << std::endl;
+		std::cerr << "Moving to new generation..." << std::endl << std::endl;
 		currentOrganism = 0;
 		currentGeneration++;
 
@@ -139,9 +136,8 @@ void NEATBot::ResetExperiment()
 	// Reset fitness score
 	isFirstFrame = true;
 
-	std::cout << "Beginning evaluation..." << std::endl;
-	std::cout << "GENERATION: " << currentGeneration << std::endl;
-	std::cout << "ORGANISM: " << currentOrganism << std::endl;
+	std::cerr << "GENERATION: " << currentGeneration << std::endl;
+	std::cerr << "ORGANISM: " << currentOrganism << std::endl;
 }
 
 void NEATBot::ConfigureInputs()
@@ -182,13 +178,13 @@ void NEATBot::ConfigureInputs()
 void NEATBot::ConfigureOutputs()
 {
 	double activation = 0.0;
-
 	int curr = 0;
 	auto outputs = organism->net->outputs;
+
 	for(auto it = outputs.begin(); it != outputs.end(); it++)
 	{
 		activation = (*it)->activation;
-		//std::cout << curr << ": " << activation << std::endl;
+		//std::cerr << curr << ": " << activation << std::endl;
 		if(activation >= 0.5) output[curr] = true; // Sigmoid?
 		else output[curr] = false;
 		curr++;
@@ -197,18 +193,10 @@ void NEATBot::ConfigureOutputs()
 
 void NEATBot::ExecuteOutputs()
 {
-	// Debug
-	if(false)
-	{
-		std::cout << "MOVE LEFT : " << output[MOVE_LEFT] << std::endl;
-		std::cout << "MOVE RIGHT: " << output[MOVE_RIGHT] << std::endl;
-		std::cout << "JUMP      : " << output[JUMP] << std::endl;
-		std::cout << "-----" << std::endl;
-	}
-
 	if(output[MOVE_LEFT]) _goLeft = true;
 	if(output[MOVE_RIGHT]) _goRight = true;
 	if(output[JUMP]) _jump = true;
+	//if(output[RUN]) _run = true;
 }
 
 float NEATBot::getFitness()
@@ -218,8 +206,8 @@ float NEATBot::getFitness()
 	float distY = std::fabs(startY - _playerPositionYNode);
 	float distance = distX + distY;
 	float distance2 = distX + distY*2;
-	float distance3 = distX + distY*distY;
 	float maxDistance = 39 + 31; // (x=39,y=31): (1,1) -> (40,32)
+	float maxDistance2 = 39 + 31*2;
 	float normalizedDistance = distance / maxDistance;
 	if(GetNodeState(_playerPositionXNode, _playerPositionYNode, NODE_COORDS) == spExit)
 	{
@@ -228,13 +216,10 @@ float NEATBot::getFitness()
 	// sanity check
 	if(distance <= 0.0f) distance = 0.0001f;
 	if(distance2 <= 0.0f) distance = 0.0001f;
-	if(distance3 <= 0.0f) distance = 0.0001f;
-	std::cout << "DISTANCE TRAVELLED: " << distance << std::endl;
-	std::cout << "DISTANCE TRAVELLED (Y*2): " << distance2 << std::endl;
-	std::cout << "DISTANCE TRAVELLED (Y^2): " << distance3 << std::endl;
-	std::cout << "NORMALIZED DISTANCE: " << normalizedDistance << std::endl;
-	std::cout << "NORMALIZED DISTANCE (Y*2): " << distance2/maxDistance << std::endl;
-	std::cout << "NORMALIZED DISTANCE (Y^2):" << distance3/maxDistance << std::endl;
+	std::cerr << "DISTANCE TRAVELLED: " << distance << std::endl;
+	std::cerr << "DISTANCE TRAVELLED (Y*2): " << distance2 << std::endl;
+	std::cerr << "NORMALIZED DISTANCE: " << normalizedDistance << std::endl;
+	std::cerr << "NORMALIZED DISTANCE (Y*2): " << distance2/maxDistance2 << std::endl << std::endl;
 
 	// time taken (penalize if idle)
 	float normalizedTime = 0.0001f; // sanity check
@@ -243,8 +228,7 @@ float NEATBot::getFitness()
 		normalizedTime = (GetTestSeconds() - GetTimeElapsed())
 			/ GetTestSeconds();
 	}
-
-	std::cout << "NORMALIZED TIME: " << normalizedTime << std::endl;
+	std::cerr << "NORMALIZED TIME: " << normalizedTime << std::endl;
 
 	// calculate fitness
 	float fitnessAM = (normalizedDistance + normalizedTime) / 2.0f;
@@ -260,7 +244,7 @@ float NEATBot::getFitness()
 	std::cerr << "FITNESS (AVG): " << fitnessAM << std::endl;
 	std::cerr << "FITNESS (WEIGHTED AVG): " << fitnessWAM << std::endl;
 	std::cerr << "FITNESS (D/T): " << fitnessDT << std::endl;
-	std::cerr << "FITNESS (HM): " << fitnessHM << std::endl;
+	std::cerr << "FITNESS (HM): " << fitnessHM << std::endl << std::endl;
 
 	return fitnessHM;
 }
@@ -285,7 +269,6 @@ bool NEATBot::IsIdleTooLong()
 		if(GetTimeElapsed() - lastTimeMoved >= maxIdleTime)
 		{
 			isIdle = true;
-			std::cout << "Player is idle" <<std::endl;
 		}
 	}
 	

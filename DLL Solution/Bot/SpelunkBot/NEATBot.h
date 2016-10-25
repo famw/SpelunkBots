@@ -9,15 +9,7 @@
 #include "NEAT/neat.h"
 #include "NEAT/population.h"
 #include "NEAT/genome.h"
-
-enum Output
-{
-	MOVE_LEFT,
-	MOVE_RIGHT,
-	JUMP,
-	
-	OUTPUT_MAX
-};
+#include "NEATOutput.h"
 
 class NEATBot : public IBot
 {
