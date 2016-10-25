@@ -22,6 +22,7 @@ OBJECTS= \
 	$(BUILD)/NotSoSolidSnake.o \
 	$(BUILD)/SeanBean.o \
 	$(BUILD)/NEATBot.o \
+	$(BUILD)/NEATBotViewer.o \
 	$(BUILD)/BehaviorTreeBot.o \
 	$(BUILD)/stdafx.o
 
