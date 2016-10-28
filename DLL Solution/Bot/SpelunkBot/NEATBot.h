@@ -38,7 +38,7 @@ public:
 	int currentOrganism;
 
 	// NEAT controls
-	static const int inputRadius{2};
+	static const int inputRadius{3};
 	static const int inputBoxSize{(inputRadius*2+1)*(inputRadius*2+1)};
 	static const int inputSize{inputBoxSize+1}; // +1 -> bias input node
 	double input[inputSize];
@@ -52,6 +52,6 @@ public:
 	// NEAT idle control
 	double lastX{0}, lastY{0};
 	double lastTimeMoved{0};
-	double maxIdleTime{2.5};
+	double maxIdleTime{5};
 };
 
