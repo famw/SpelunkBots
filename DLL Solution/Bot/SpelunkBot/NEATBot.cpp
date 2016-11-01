@@ -150,7 +150,7 @@ void NEATBot::ConfigureInputs()
 			int x = _playerPositionXNode + dx;
 			int y = _playerPositionYNode + dy;
 
-			int tile = 0;
+			int tile = 1; // start at solid block
 			//bool enemy = 0;
 			if(x >= 0 && x<=42 && y >=0 && y<=34) // level boundaries
 			{
@@ -162,10 +162,10 @@ void NEATBot::ConfigureInputs()
 			switch(tile)
 			{
 				case 0: tile=0; break;		// empty
-				case 1: tile=1; break;		// terrain
+				case 1: tile=1; break;		// solid
 				case 3: tile=2; break;		// exit
 				case 10: tile=-1; break;	// spikes
-				default: tile=0; break;		// everything else
+				default: tile=1; break;		// everything else - solid
 			}
 
 			input[currentInput++] = tile;
