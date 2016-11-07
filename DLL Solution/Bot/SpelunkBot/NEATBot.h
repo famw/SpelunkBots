@@ -27,22 +27,20 @@ public:
 	void ResetExperiment();
 	void ConfigureInputs();
 	void ConfigureOutputs();
-	void ExecuteOutputs();
 	bool IsIdleTooLong();
 
-	// NEAT experiment
+	// NEAT experiment control
 	std::unique_ptr<NEAT::Population> population;
 	std::unique_ptr<NEAT::Genome> genome;
 	NEAT::Organism * organism; //TODO(Martin): remove this raw pointer :(
 	int currentGeneration;
 	int currentOrganism;
 
-	// NEAT controls
-	static const int inputRadius{3};
-	static const int inputBoxSize{(inputRadius*2+1)*(inputRadius*2+1)};
+	// NEAT sensorial information
+	static const int boxRadius{2};
+	static const int inputBoxSize{(boxRadius*2+1)*(boxRadius*2+1)};
 	static const int inputSize{inputBoxSize+1}; // +1 -> bias input node
 	double input[inputSize];
-	bool output[OUTPUT_MAX];
 
 	// NEAT fitness
 	float getFitness();

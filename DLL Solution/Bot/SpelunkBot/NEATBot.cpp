@@ -35,7 +35,6 @@ void NEATBot::Update()
 	organism->net->load_sensors(input);
 	organism->net->activate();
 	ConfigureOutputs();
-	ExecuteOutputs();
 
 	// win condition
 	if(GetNodeState(_playerPositionXNode, _playerPositionYNode, NODE_COORDS) == spExit)
@@ -142,10 +141,11 @@ void NEATBot::ResetExperiment()
 
 void NEATBot::ConfigureInputs()
 {
+	// sensorial input
 	int currentInput = 0;
-	for(int dy=-inputRadius; dy<=inputRadius; dy++)
+	for(int dy=-boxRadius; dy<=boxRadius; dy++)
 	{
-		for(int dx=-inputRadius; dx<=inputRadius; dx++)
+		for(int dx=-boxRadius; dx<=boxRadius; dx++)
 		{
 			int x = _playerPositionXNode + dx;
 			int y = _playerPositionYNode + dy;
@@ -163,7 +163,9 @@ void NEATBot::ConfigureInputs()
 			{
 				case 0: tile=0; break;		// empty
 				case 1: tile=1; break;		// solid
+				case 2: tile=0; break;		// ladder
 				case 3: tile=2; break;		// exit
+				case 4: tile=0; break;		// entrance
 				case 10: tile=-1; break;	// spikes
 				default: tile=1; break;		// everything else - solid
 			}
@@ -172,31 +174,46 @@ void NEATBot::ConfigureInputs()
 		}
 	}
 
-	input[inputSize-1] = 1.0; // bias
+	// obstacle input
+	// TODO(martin): implement this
+
+	// bias input
+	input[inputSize-1] = 1.0;
 }
 
 void NEATBot::ConfigureOutputs()
 {
 	double activation = 0.0;
-	int curr = 0;
+	int current = 0;
 	auto outputs = organism->net->outputs;
 
 	for(auto it = outputs.begin(); it != outputs.end(); it++)
 	{
 		activation = (*it)->activation;
 		//std::cerr << curr << ": " << activation << std::endl;
-		if(activation >= 0.5) output[curr] = true; // Sigmoid?
-		else output[curr] = false;
-		curr++;
-	}
-}
 
-void NEATBot::ExecuteOutputs()
-{
-	if(output[MOVE_LEFT]) _goLeft = true;
-	if(output[MOVE_RIGHT]) _goRight = true;
-	if(output[JUMP]) _jump = true;
-	//if(output[RUN]) _run = true;
+		// set buttons accordingly
+		switch(current)
+		{
+			case Movement:
+				if(activation >= Activation::MoveLeftMin &&
+					activation <= Activation::MoveLeftMax)
+						_goLeft = true;
+				else if(activation >= Activation::MoveRightMin &&
+						activation <= Activation::MoveRightMax)
+						_goRight = true;
+				break;
+
+			case Jump:
+				if(activation >= Activation::JumpMin &&
+					activation <= Activation::JumpMax)
+						_jump = true;
+				break;
+
+			default: break; // shouldnt happen
+		}
+		current++;
+	}
 }
 
 float NEATBot::getFitness()
