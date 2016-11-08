@@ -42,6 +42,11 @@ public:
 	static const int inputSize{inputBoxSize+1}; // +1 -> bias input node
 	double input[inputSize];
 
+	// obstacle detection
+	enum Direction { Left = -1, Right = 1 };
+	Direction facingDirection{Right};
+	int inputDir{0};
+
 	// NEAT fitness
 	float getFitness();
 	bool isFirstFrame{true};

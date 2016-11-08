@@ -24,6 +24,8 @@ void NEATBot::Update()
 	{
 		startX = _playerPositionXNode;
 		startY = _playerPositionYNode;
+		facingDirection = Direction::Right;
+		inputDir = 0;
 		isFirstFrame = false;
 	}
 	
@@ -35,6 +37,9 @@ void NEATBot::Update()
 	organism->net->load_sensors(input);
 	organism->net->activate();
 	ConfigureOutputs();
+
+	if(_goLeft) facingDirection = Direction::Left;
+	else if(_goRight) facingDirection = Direction::Right;
 
 	// win condition
 	if(GetNodeState(_playerPositionXNode, _playerPositionYNode, NODE_COORDS) == spExit)
@@ -174,8 +179,20 @@ void NEATBot::ConfigureInputs()
 		}
 	}
 
+
 	// obstacle input
-	// TODO(martin): implement this
+	int x = _playerPositionXNode + facingDirection;
+	int y = _playerPositionYNode;
+	int tile1 = GetNodeState(x, y, 0);
+	int tile2 = GetNodeState(x, y-1, 0);
+	int tile3 = GetNodeState(x, y-2, 0);
+	if(tile1 == 1 && tile2 == 1 && tile3 == 1)
+	{
+		if(facingDirection == Direction::Left) inputDir = 1;
+		else inputDir = -1;
+	}
+	input[currentInput++] = inputDir;
+
 
 	// bias input
 	input[inputSize-1] = 1.0;
