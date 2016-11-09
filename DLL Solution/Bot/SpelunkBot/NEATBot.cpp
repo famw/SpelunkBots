@@ -22,8 +22,8 @@ void NEATBot::Update()
 	// get entrance location
 	if(isFirstFrame)
 	{
-		startX = _playerPositionXNode;
-		startY = _playerPositionYNode;
+		startPos.x = _playerPositionXNode;
+		startPos.y = _playerPositionYNode;
 		facingDirection = Direction::Right;
 		inputDir = 0;
 		isFirstFrame = false;
@@ -236,8 +236,8 @@ void NEATBot::ConfigureOutputs()
 float NEATBot::getFitness()
 {
 	// distance travelled (based on manhattan distance)
-	float distX = std::fabs(startX - _playerPositionXNode);
-	float distY = std::fabs(startY - _playerPositionYNode);
+	float distX = std::fabs(startPos.x - _playerPositionXNode);
+	float distY = std::fabs(startPos.y - _playerPositionYNode);
 	float distance = distX + distY;
 	float distance2 = distX + distY*2;
 	float maxDistance = 39 + 31; // (x=39,y=31): (1,1) -> (40,32)
@@ -287,12 +287,15 @@ bool NEATBot::IsIdleTooLong()
 {
 	bool isIdle = false;
 
+	int currX = _playerPositionXNode;
+	int currY = _playerPositionYNode;
+
 	// If we changed positions (node)
-	if(lastX != _playerPositionXNode || lastY != _playerPositionYNode)
+	if(lastPos.x != currX || lastPos.y != currY)
 	{
 		// Update our last position
-		lastX = _playerPositionXNode;
-		lastY = _playerPositionYNode;
+		lastPos.x = currX;
+		lastPos.y = currY;
 		// Update out last time moved
 		lastTimeMoved = GetTimeElapsed();
 	}

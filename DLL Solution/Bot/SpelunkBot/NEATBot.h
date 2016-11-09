@@ -47,14 +47,17 @@ public:
 	Direction facingDirection{Right};
 	int inputDir{0};
 
+	
+	struct Position { int x; int y;};
+
 	// NEAT fitness
 	float getFitness();
 	bool isFirstFrame{true};
-	int startX{0}, startY{0};
+	Position startPos{0,0};
 
 	// NEAT idle control
-	double lastX{0}, lastY{0};
+	Position lastPos{0,0};
 	double lastTimeMoved{0};
-	double maxIdleTime{5};
+	double maxIdleTime{3};
 };
 
