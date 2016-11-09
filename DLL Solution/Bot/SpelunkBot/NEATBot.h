@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <map>
 
 #include "IBot.h"
 
@@ -48,7 +49,15 @@ public:
 	int inputDir{0};
 
 	
-	struct Position { int x; int y;};
+	struct Position
+	{
+		int x; int y;
+		bool operator<(const Position & other) const
+		{
+			if(this->x == other.x) return this->y < other.y;
+			return this->x < other.x;
+		}
+	};
 
 	// NEAT fitness
 	float getFitness();
@@ -59,5 +68,7 @@ public:
 	Position lastPos{0,0};
 	double lastTimeMoved{0};
 	double maxIdleTime{3};
+	std::map<Position, int> states;
+	int stateMaxVisit{10};
 };
 

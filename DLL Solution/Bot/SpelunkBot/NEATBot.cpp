@@ -22,10 +22,13 @@ void NEATBot::Update()
 	// get entrance location
 	if(isFirstFrame)
 	{
-		startPos.x = _playerPositionXNode;
-		startPos.y = _playerPositionYNode;
+		startPos= {_playerPositionXNode, _playerPositionYNode};
+		lastPos = {0,0};
+		lastTimeMoved = 0;
+		states.clear();
 		facingDirection = Direction::Right;
 		inputDir = 0;
+
 		isFirstFrame = false;
 	}
 	
@@ -287,17 +290,21 @@ bool NEATBot::IsIdleTooLong()
 {
 	bool isIdle = false;
 
-	int currX = _playerPositionXNode;
-	int currY = _playerPositionYNode;
+	Position currentPos{_playerPositionXNode, _playerPositionYNode};
 
 	// If we changed positions (node)
-	if(lastPos.x != currX || lastPos.y != currY)
+	if(lastPos.x != currentPos.x || lastPos.y != currentPos.y)
 	{
 		// Update our last position
-		lastPos.x = currX;
-		lastPos.y = currY;
+		lastPos.x = currentPos.x;
+		lastPos.y = currentPos.y;
 		// Update out last time moved
 		lastTimeMoved = GetTimeElapsed();
+
+		// add entry to map
+		states[currentPos] += 1;
+		// if we visit it too much, abort
+		if(states[currentPos] > stateMaxVisit) isIdle = true;
 	}
 	// We have not moved
 	else
