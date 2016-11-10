@@ -238,6 +238,8 @@ void NEATBot::ConfigureOutputs()
 
 float NEATBot::getFitness()
 {
+    float timeElapsed = GetTimeElapsed();
+
 	// distance travelled (based on manhattan distance)
 	float distX = std::fabs(startPos.x - _playerPositionXNode);
 	float distY = std::fabs(startPos.y - _playerPositionYNode);
@@ -258,20 +260,36 @@ float NEATBot::getFitness()
 	std::cerr << "NORMALIZED DISTANCE: " << normalizedDistance << std::endl;
 	std::cerr << "NORMALIZED DISTANCE (Y*2): " << distance2/maxDistance2 << std::endl << std::endl;
 
+    
+    // tiles explored
+    float statesExplored = states.size();
+    if(statesExplored == 0) statesExplored = 1;
+    float exploration = statesExplored / (statesExplored + 50.0f);
+	std::cerr << "TILES EXPLORED: " << statesExplored << std::endl;
+	std::cerr << "NORMALIZED TILES EXPLORED: " << exploration << std::endl << std::endl;
+
+
 	// time taken (penalize if idle)
 	float normalizedTime = 0.0001f; // sanity check
-	if(!IsIdleTooLong() && GetTimeElapsed() < GetTestSeconds()) 
+	if(!IsIdleTooLong() && timeElapsed < GetTestSeconds()) 
 	{
-		normalizedTime = (GetTestSeconds() - GetTimeElapsed())
+		normalizedTime = (GetTestSeconds() - timeElapsed)
 			/ GetTestSeconds();
 	}
+    float explorationTime;
+    int n = 3, m = 2;
+    if(timeElapsed < GetTestSeconds() && organism->winner) explorationTime = timeElapsed; // Alive && Tt < Tmax
+    else if(timeElapsed >= GetTestSeconds() && !IsIdleTooLong()) explorationTime = GetTestSeconds() * m; // Alive && Tt > Tmax
+    else explorationTime = GetTestSeconds() * n; // Otherwise
 	std::cerr << "NORMALIZED TIME: " << normalizedTime << std::endl;
+	std::cerr << "EXPLORATION TIME: " << explorationTime << std::endl;
 
 	// calculate fitness
 	float fitnessAM = (normalizedDistance + normalizedTime) / 2.0f;
 	float fitnessWAM = 0.6f*normalizedDistance + 0.4f*normalizedTime;
 	float fitnessDT = normalizedDistance / normalizedTime;
 	float fitnessHM = 2.0f/((1.0f/normalizedDistance)+(1.0f/normalizedTime));
+    float fitnessEX = (GetTestSeconds() * (0.5f*normalizedDistance + 0.5f*exploration)) / explorationTime;
 	// sanity check
 	if(fitnessAM <= 0.0f) fitnessAM == 0.0001f;
 	if(fitnessWAM <= 0.0f) fitnessWAM == 0.0001f;
@@ -282,8 +300,9 @@ float NEATBot::getFitness()
 	std::cerr << "FITNESS (WEIGHTED AVG): " << fitnessWAM << std::endl;
 	std::cerr << "FITNESS (D/T): " << fitnessDT << std::endl;
 	std::cerr << "FITNESS (HM): " << fitnessHM << std::endl << std::endl;
+	std::cerr << "FITNESS (EX): " << fitnessEX << std::endl << std::endl;
 
-	return fitnessHM;
+	return fitnessEX;
 }
 
 bool NEATBot::IsIdleTooLong()
