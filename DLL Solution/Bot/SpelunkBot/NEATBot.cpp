@@ -22,7 +22,7 @@ void NEATBot::Update()
 	// get entrance location
 	if(isFirstFrame)
 	{
-		startPos= {_playerPositionXNode, _playerPositionYNode};
+		startPos= {(int)_playerPositionXNode, (int)_playerPositionYNode};
 		lastPos = {0,0};
 		lastTimeMoved = 0;
 		states.clear();
@@ -45,12 +45,11 @@ void NEATBot::Update()
 	else if(_goRight) facingDirection = Direction::Right;
 
 	// win condition
-	if(GetNodeState(_playerPositionXNode, _playerPositionYNode, NODE_COORDS) == spExit)
+	if(hasWon())
 	{
 		organism->winner = true;
 		_shouldSuicide = true;
 	}
-
 }
 
 void NEATBot::Reset()
@@ -238,78 +237,131 @@ void NEATBot::ConfigureOutputs()
 
 float NEATBot::getFitness()
 {
-    float timeElapsed = GetTimeElapsed();
+	// gather information
+	float timeElapsed = GetTimeElapsed();
+	RunStatus status = getRunStatus(timeElapsed);
+		
 
-	// distance travelled (based on manhattan distance)
+	// distance travelled fitness (based on manhattan distance)
 	float distX = std::fabs(startPos.x - _playerPositionXNode);
 	float distY = std::fabs(startPos.y - _playerPositionYNode);
-	float distance = distX + distY;
-	float distance2 = distX + distY*2;
+
+	float distance = distX + distY; // normal manhattan distance
+	float distance2 = distX + distY*2; // weighted manhattan distance
+	if(distance <= 0) distance = 1;
+	if(distance2 <= 0) distance2 = 1;
+
 	float maxDistance = 39 + 31; // (x=39,y=31): (1,1) -> (40,32)
 	float maxDistance2 = 39 + 31*2;
+
 	float normalizedDistance = distance / maxDistance;
-	if(GetNodeState(_playerPositionXNode, _playerPositionYNode, NODE_COORDS) == spExit)
-	{
-		normalizedDistance = 1.0f;
-	}
-	// sanity check
-	if(distance <= 0.0f) distance = 0.0001f;
-	if(distance2 <= 0.0f) distance = 0.0001f;
+	float normalizedDistance2 = distance2 / maxDistance2;
+	if(hasWon()) normalizedDistance = normalizedDistance2 = 1.0f;
+
 	std::cerr << "DISTANCE TRAVELLED: " << distance << std::endl;
 	std::cerr << "DISTANCE TRAVELLED (Y*2): " << distance2 << std::endl;
 	std::cerr << "NORMALIZED DISTANCE: " << normalizedDistance << std::endl;
-	std::cerr << "NORMALIZED DISTANCE (Y*2): " << distance2/maxDistance2 << std::endl << std::endl;
+	std::cerr << "NORMALIZED DISTANCE (Y*2): " << normalizedDistance2 << std::endl << std::endl;
 
     
-    // tiles explored
+    // states explored fitness
     float statesExplored = states.size();
     if(statesExplored == 0) statesExplored = 1;
     float exploration = statesExplored / (statesExplored + 50.0f);
-	std::cerr << "TILES EXPLORED: " << statesExplored << std::endl;
-	std::cerr << "NORMALIZED TILES EXPLORED: " << exploration << std::endl << std::endl;
+
+	std::cerr << "STATES EXPLORED: " << statesExplored << std::endl;
+	std::cerr << "NORMALIZED STATES EXPLORED: " << exploration << std::endl << std::endl;
 
 
-	// time taken (penalize if idle)
-	float normalizedTime = 0.0001f; // sanity check
-	if(!IsIdleTooLong() && timeElapsed < GetTestSeconds()) 
+	// time taken fitness
+	float normalizedTime, explorationTime;
+    int m = 2, n = 3;
+	// apply penalties according to results
+	switch(status)
 	{
-		normalizedTime = (GetTestSeconds() - timeElapsed)
-			/ GetTestSeconds();
+		case RunStatus::Won:
+			std::cerr << "WINNER" << std::endl;
+			// winner (Alive && Tt < Tmax)
+			normalizedTime = (GetTestSeconds() - timeElapsed) / GetTestSeconds();
+			explorationTime = timeElapsed;
+		break;
+
+		case RunStatus::Explored:
+			std::cerr << "WAS EXPLORING" << std::endl;
+			// was exploring (Alive && Tt < Tmax)
+			normalizedTime = 0.01f;
+			explorationTime = GetTestSeconds() * m;
+			break;
+		
+		case RunStatus::Idle:
+			std::cerr << "IDLE" << std::endl;
+			// idle
+			normalizedTime = 0.001f;
+			explorationTime = GetTestSeconds() * n;
+			break;
+
+		case RunStatus::Repeated:
+			// Repeated too many states
+			std::cerr << "REPEATED STATES" << std::endl;
+			normalizedTime = 0.001f;
+			explorationTime = GetTestSeconds() * n;
+			break;
+
+		case RunStatus::Died:
+			// died
+			std::cerr << "DIED" << std::endl;
+			normalizedTime = 0.001f;
+			explorationTime = GetTestSeconds() * n;
+			break;
+
 	}
-    float explorationTime;
-    int n = 3, m = 2;
-    if(timeElapsed < GetTestSeconds() && organism->winner) explorationTime = timeElapsed; // Alive && Tt < Tmax
-    else if(timeElapsed >= GetTestSeconds() && !IsIdleTooLong()) explorationTime = GetTestSeconds() * m; // Alive && Tt > Tmax
-    else explorationTime = GetTestSeconds() * n; // Otherwise
+
 	std::cerr << "NORMALIZED TIME: " << normalizedTime << std::endl;
-	std::cerr << "EXPLORATION TIME: " << explorationTime << std::endl;
+	std::cerr << "EXPLORATION TIME: " << explorationTime << std::endl << std::endl;
+
 
 	// calculate fitness
 	float fitnessAM = (normalizedDistance + normalizedTime) / 2.0f;
 	float fitnessWAM = 0.6f*normalizedDistance + 0.4f*normalizedTime;
 	float fitnessDT = normalizedDistance / normalizedTime;
+	float fitnessDT2 = normalizedDistance * normalizedTime;
+	float fitnessDT3 = normalizedDistance * explorationTime;
 	float fitnessHM = 2.0f/((1.0f/normalizedDistance)+(1.0f/normalizedTime));
     float fitnessEX = (GetTestSeconds() * (0.5f*normalizedDistance + 0.5f*exploration)) / explorationTime;
-	// sanity check
-	if(fitnessAM <= 0.0f) fitnessAM == 0.0001f;
-	if(fitnessWAM <= 0.0f) fitnessWAM == 0.0001f;
-	if(fitnessDT <= 0.0f) fitnessDT == 0.0001f;
-	if(fitnessHM <= 0.0f) fitnessHM == 0.0001f;
 
-	std::cerr << "FITNESS (AVG): " << fitnessAM << std::endl;
-	std::cerr << "FITNESS (WEIGHTED AVG): " << fitnessWAM << std::endl;
-	std::cerr << "FITNESS (D/T): " << fitnessDT << std::endl;
-	std::cerr << "FITNESS (HM): " << fitnessHM << std::endl << std::endl;
+	std::cerr << "FITNESS (AM): " << fitnessAM << std::endl;
+	std::cerr << "FITNESS (WAM): " << fitnessWAM << std::endl;
+	std::cerr << "FITNESS (DT1): " << fitnessDT << std::endl;
+	std::cerr << "FITNESS (DT2): " << fitnessDT2 << std::endl;
+	std::cerr << "FITNESS (DT3): " << fitnessDT3 << std::endl;
+	std::cerr << "FITNESS (HM): " << fitnessHM << std::endl;
 	std::cerr << "FITNESS (EX): " << fitnessEX << std::endl << std::endl;
 
 	return fitnessEX;
+}
+
+bool NEATBot::hasWon()
+{
+	return GetNodeState(_playerPositionXNode, _playerPositionYNode, NODE_COORDS) == spExit; 
+}
+
+NEATBot::RunStatus NEATBot::getRunStatus(float timeElapsed)
+{
+	RunStatus status;
+	if(timeElapsed < GetTestSeconds() && organism->winner) status = RunStatus::Won;
+	else if(timeElapsed >= GetTestSeconds() && !IsIdleTooLong()) status = RunStatus::Explored;
+	else if(IsIdleTooLong()) status = RunStatus::Idle;
+	else if(hasRepeatedStates()) status = RunStatus::Repeated;
+	else status = RunStatus::Died;
+	
+	return status;
 }
 
 bool NEATBot::IsIdleTooLong()
 {
 	bool isIdle = false;
 
-	Position currentPos{_playerPositionXNode, _playerPositionYNode};
+	Position currentPos{(int)_playerPositionXNode, (int)_playerPositionYNode};
 
 	// If we changed positions (node)
 	if(lastPos.x != currentPos.x || lastPos.y != currentPos.y)
@@ -336,4 +388,14 @@ bool NEATBot::IsIdleTooLong()
 	}
 	
 	return isIdle;
+}
+
+bool NEATBot::hasRepeatedStates()
+{
+	std::map<Position, int>::iterator it;
+	for(it = states.begin(); it != states.end(); it++)
+	{
+		if(it->second > stateMaxVisit) return true;
+	}
+	return false;
 }

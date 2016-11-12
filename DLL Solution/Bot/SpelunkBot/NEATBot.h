@@ -61,6 +61,9 @@ public:
 
 	// NEAT fitness
 	float getFitness();
+	bool hasWon();
+	enum RunStatus { Won, Explored, Idle, Repeated, Died };	
+	RunStatus getRunStatus(float timeElapsed);
 	bool isFirstFrame{true};
 	Position startPos{0,0};
 
@@ -70,5 +73,6 @@ public:
 	double maxIdleTime{3};
 	std::map<Position, int> states;
 	int stateMaxVisit{10};
+	bool hasRepeatedStates();
 };
 
