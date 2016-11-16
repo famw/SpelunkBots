@@ -40,7 +40,7 @@ public:
 	// NEAT sensorial information
 	static const int boxRadius{2};
 	static const int inputBoxSize{(boxRadius*2+1)*(boxRadius*2+1)};
-	static const int inputSize{inputBoxSize+1}; // +1 -> bias input node
+	static const int inputSize{inputBoxSize+2}; // +1 -> bias input node
 	double input[inputSize];
 
 	// obstacle detection
