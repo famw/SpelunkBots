@@ -183,7 +183,7 @@ void NEATBot::ConfigureInputs()
 
 
 	// obstacle input
-	int x = _playerPositionXNode + facingDirection;
+	/*int x = _playerPositionXNode + facingDirection;
 	int y = _playerPositionYNode;
 	int tile1 = GetNodeState(x, y, 0);
 	int tile2 = GetNodeState(x, y-1, 0);
@@ -193,7 +193,7 @@ void NEATBot::ConfigureInputs()
 		if(facingDirection == Direction::Left) inputDir = 1;
 		else inputDir = -1;
 	}
-	input[currentInput++] = inputDir;
+	input[currentInput++] = inputDir;*/
 
 
 	// bias input
