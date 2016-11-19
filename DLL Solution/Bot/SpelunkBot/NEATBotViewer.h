@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <map>
 
 #include "IBot.h"
 
@@ -28,11 +29,12 @@ public:
 	void ConfigureInputs();
 	void ConfigureOutputs();
 	bool IsIdleTooLong();
-
-	// NEAT experiment
+	
+	// NEAT experiment control
 	std::unique_ptr<NEAT::Population> population;
 	std::unique_ptr<NEAT::Genome> genome;
 	NEAT::Organism * organism; //TODO(Martin): remove this raw pointer :(
+	int currentGeneration;
 	int currentOrganism;
 
 	// NEAT sensorial information
@@ -41,14 +43,36 @@ public:
 	static const int inputSize{inputBoxSize+1}; // +1 -> bias input node
 	double input[inputSize];
 
+	// obstacle detection
+	enum Direction { Left = -1, Right = 1 };
+	Direction facingDirection{Right};
+	int inputDir{0};
+
+	
+	struct Position
+	{
+		int x; int y;
+		bool operator<(const Position & other) const
+		{
+			if(this->x == other.x) return this->y < other.y;
+			return this->x < other.x;
+		}
+	};
+
 	// NEAT fitness
 	float getFitness();
+	bool hasWon();
+	enum RunStatus { Won, Explored, Idle, Repeated, Died };	
+	RunStatus getRunStatus(float timeElapsed);
 	bool isFirstFrame{true};
-	int startX{0}, startY{0};
+	Position startPos{0,0};
 
 	// NEAT idle control
-	double lastX{0}, lastY{0};
+	Position lastPos{0,0};
 	double lastTimeMoved{0};
-	double maxIdleTime{5};
+	double maxIdleTime{3};
+	std::map<Position, int> states;
+	int stateMaxVisit{10};
+	bool hasRepeatedStates();
 };
 
