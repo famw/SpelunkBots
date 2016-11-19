@@ -229,6 +229,13 @@ void NEATBot::ConfigureOutputs()
 						_jump = true;
 				break;
 
+			case Run:
+				if(activation >= Activation::RunMin &&
+					activation <= Activation::RunMax)
+				{
+					_run = true;
+				}
+
 			default: break; // shouldnt happen
 		}
 		current++;

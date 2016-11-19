@@ -4,7 +4,7 @@ enum Output
 {
 	Movement,
 	Jump,
-	//Run,
+	Run,
 
 	OUTPUT_MAX
 };
@@ -17,4 +17,6 @@ namespace Activation
 	const double MoveRightMax = 1.0;
 	const double JumpMin = 0.5;
 	const double JumpMax = 1.0;
+	const double RunMin = 0.5;
+	const double RunMax = 1.0;
 }
