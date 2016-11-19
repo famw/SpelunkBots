@@ -57,6 +57,7 @@ void NEATBot::Reset()
 	_goRight = false;
 	_goLeft = false;
 	_jump = false;
+	_lookUp = false;
 	_attack = false;
 	_shouldSuicide = false;
 	_run = false;
@@ -229,11 +230,12 @@ void NEATBot::ConfigureOutputs()
 						_jump = true;
 				break;
 
-			case Run:
+			case Up:
 				if(activation >= Activation::RunMin &&
 					activation <= Activation::RunMax)
 				{
-					_run = true;
+					std::cout << "UP" << std::endl;
+					_lookUp = true;
 				}
 
 			default: break; // shouldnt happen
