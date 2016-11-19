@@ -344,7 +344,7 @@ float NEATBot::getFitness()
 	std::cerr << "FITNESS (HM): " << fitnessHM << std::endl;
 	std::cerr << "FITNESS (EX): " << fitnessEX << std::endl << std::endl;
 
-	return fitnessEX;
+	return fitnessWAM;
 }
 
 bool NEATBot::hasWon()
