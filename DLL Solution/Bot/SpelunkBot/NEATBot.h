@@ -40,7 +40,7 @@ public:
 	// NEAT sensorial information
 	static const int boxRadius{2};
 	static const int inputBoxSize{(boxRadius*2+1)*(boxRadius*2+1)};
-	static const int inputSize{inputBoxSize+1}; // +1 -> bias input node
+	static const int inputSize{inputBoxSize+2}; // +2 -> bias+obstacle
 	double input[inputSize];
 
 	// obstacle detection
@@ -70,7 +70,7 @@ public:
 	// NEAT idle control
 	Position lastPos{0,0};
 	double lastTimeMoved{0};
-	double maxIdleTime{3};
+	double maxIdleTime{6};
 	std::map<Position, int> states;
 	int stateMaxVisit{10};
 	bool hasRepeatedStates();
